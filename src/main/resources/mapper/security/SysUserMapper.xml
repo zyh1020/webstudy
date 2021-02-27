@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.security.mapper.SysUserMapper">
+
+    <resultMap id="selectUserByUserNameMap" type="com.zyh.webstudy.security.domain.SysUser">
+        <id property="id" column="uId"/>
+        <result property="name" column="uName"/>
+        <result property="username" column="uUserName"/>
+        <result property="password" column="uPassword"/>
+        <result property="phone" column="uPhone"/>
+        <result property="address" column="uAddress"/>
+        <result property="userAvatar" column="uUuserAvatar"/>
+        <result property="remark" column="uRemark"/>
+        <result property="enabled" column="uEnable"/>
+        <collection property="sysRoles" ofType="com.zyh.webstudy.security.domain.SysRole">
+            <id property="id" column="rId"/>
+            <result property="name" column="rName"/>
+            <result property="nameZh" column="rNameZh"/>
+        </collection>
+    </resultMap>
+
+    <!-- 用户具有那些角色 -->
+    <select id="selectUserByUserName" resultMap="selectUserByUserNameMap">
+        SELECT
+            us.id AS uId,
+            us.name AS uName,
+            us.username AS uUserName,
+            us.password AS uPassword,
+            us.phone AS uPhone,
+            us.address AS uAddress,
+            us.userAvatar AS uUuserAvatar,
+            us.remark AS uRemark,
+            us.enabled AS uEnable,
+            ro.id AS rId,
+            ro.name AS rName,
+            ro.nameZh AS rNameZh
+        FROM
+            sys_user us
+            LEFT JOIN sys_user_role usro ON us.id = usro.uid
+            LEFT JOIN sys_role ro ON usro.rid = ro.id
+        WHERE
+	        us.username = #{userName}
+    </select>
+
+</mapper>

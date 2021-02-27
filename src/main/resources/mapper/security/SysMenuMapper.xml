@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.security.mapper.SysMenuMapper">
+
+    <resultMap id="selectMensWithRoleMap" type="com.zyh.webstudy.security.domain.SysMenu">
+        <id property="id" column="mId"/>
+        <result property="parentId" column="mParentId"/>
+        <result property="url" column="mUrl"/>
+        <result property="path" column="mPath"/>
+        <result property="component" column="mComponent"/>
+        <result property="name" column="mName"/>
+        <result property="icon" column="mIcon"/>
+        <result property="enabled" column="mEnabled"/>
+        <collection property="sysRoles" ofType="com.zyh.webstudy.security.domain.SysRole">
+            <id property="id" column="rId"/>
+            <result property="name" column="rName"/>
+            <result property="nameZh" column="rNameZh"/>
+        </collection>
+    </resultMap>
+
+    <!-- 访问菜单需要哪些角色 -->
+    <select id="selectMensWithRole" resultMap="selectMensWithRoleMap">
+        select
+            mu.id AS mId ,
+            mu.parentId AS mParentId,
+            mu.url AS mUrl,
+            mu.path AS mPath,
+            mu.component AS mComponent,
+            mu.name AS mName,
+            mu.icon AS mIco,
+            mu.enabled	AS mEnabled,
+            ro.id AS rId,
+            ro.name AS rName,
+            ro.nameZh AS rNameZh
+        from sys_menu mu
+        LEFT JOIN sys_menu_role  muro on mu.id = muro.mid
+        LEFT JOIN sys_role ro on muro.rid = ro.id
+        where rId is not null
+        ORDER BY mId
+    </select>
+
+</mapper>
