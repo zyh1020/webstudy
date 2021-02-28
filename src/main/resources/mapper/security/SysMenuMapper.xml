@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zyh.webstudy.security.mapper.SysMenuMapper">
+<mapper namespace="com.zyh.webstudy.mapper.security.SysMenuMapper">
 
-    <resultMap id="selectMensWithRoleMap" type="com.zyh.webstudy.security.domain.SysMenu">
+    <resultMap id="selectMensWithRoleMap" type="com.zyh.webstudy.domain.security.SysMenu">
         <id property="id" column="mId"/>
         <result property="parentId" column="mParentId"/>
         <result property="url" column="mUrl"/>
@@ -11,7 +11,7 @@
         <result property="name" column="mName"/>
         <result property="icon" column="mIcon"/>
         <result property="enabled" column="mEnabled"/>
-        <collection property="sysRoles" ofType="com.zyh.webstudy.security.domain.SysRole">
+        <collection property="sysRoles" ofType="com.zyh.webstudy.domain.security.SysRole">
             <id property="id" column="rId"/>
             <result property="name" column="rName"/>
             <result property="nameZh" column="rNameZh"/>

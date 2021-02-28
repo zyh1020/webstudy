@@ -4,7 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@MapperScan({"com.zyh.webstudy.security.mapper"})
+@MapperScan("com.zyh.webstudy.mapper")
 @SpringBootApplication
 public class WebstudyApplication {
 

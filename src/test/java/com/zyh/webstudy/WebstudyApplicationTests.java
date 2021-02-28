@@ -1,9 +1,10 @@
 package com.zyh.webstudy;
 
-import com.zyh.webstudy.security.domain.SysMenu;
-import com.zyh.webstudy.security.domain.SysUser;
-import com.zyh.webstudy.security.service.SysMenuService;
-import com.zyh.webstudy.security.service.SysUserService;
+import com.zyh.webstudy.domain.security.SysMenu;
+import com.zyh.webstudy.domain.security.SysUser;
+import com.zyh.webstudy.service.security.SysMenuService;
+import com.zyh.webstudy.service.security.SysUserService;
+import com.zyh.webstudy.utils.JwtTokenUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,13 @@ class WebstudyApplicationTests {
 
     @Autowired
     SysMenuService sysMenuService;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Test
+    void test03() {
+        System.out.println(jwtTokenUtil);
+    }
 
     @Test
     void test02() {
@@ -31,7 +39,6 @@ class WebstudyApplicationTests {
     void test01() {
         SysUser zyh = sysUserService.findUserByUserName("zyh");
         System.out.println(zyh);
-
     }
 
 }

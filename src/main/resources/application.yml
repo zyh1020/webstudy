@@ -5,5 +5,10 @@ spring:
     url: jdbc:mysql://localhost:3306/webstudy?useSSL=false&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+jwt:
+  tokeneCpiration: 86400
+  tokenSignKey: zyh10201314
+  tokenHead: token
+
 mybatis:
   mapper-locations:  classpath:mapper/**/*.xml

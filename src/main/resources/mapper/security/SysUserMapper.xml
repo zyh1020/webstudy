@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zyh.webstudy.security.mapper.SysUserMapper">
+<mapper namespace="com.zyh.webstudy.mapper.security.SysUserMapper">
 
-    <resultMap id="selectUserByUserNameMap" type="com.zyh.webstudy.security.domain.SysUser">
+    <resultMap id="selectUserByUserNameMap" type="com.zyh.webstudy.domain.security.SysUser">
         <id property="id" column="uId"/>
         <result property="name" column="uName"/>
         <result property="username" column="uUserName"/>
@@ -12,7 +12,7 @@
         <result property="userAvatar" column="uUuserAvatar"/>
         <result property="remark" column="uRemark"/>
         <result property="enabled" column="uEnable"/>
-        <collection property="sysRoles" ofType="com.zyh.webstudy.security.domain.SysRole">
+        <collection property="sysRoles" ofType="com.zyh.webstudy.domain.security.SysRole">
             <id property="id" column="rId"/>
             <result property="name" column="rName"/>
             <result property="nameZh" column="rNameZh"/>
