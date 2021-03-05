@@ -18,8 +18,11 @@ public class SysMenu implements Serializable {
     private String component;
     private String name;
     private String icon;
+    private String hidden;
     private Boolean enabled;
     /* 角色：表示访问这样的url需要哪些角色 */
     private List<SysRole> sysRoles;
+    /* 子菜单 */
+    private List<SysMenu> children;
 
 }

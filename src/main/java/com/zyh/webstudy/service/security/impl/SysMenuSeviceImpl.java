@@ -16,4 +16,8 @@ public class SysMenuSeviceImpl implements SysMenuService {
     public List<SysMenu> selectMensWithRole() {
         return sysMenuMapper.selectMensWithRole();
     }
+    @Override
+    public List<SysMenu> findMensByUserId(Integer userId) {
+        return sysMenuMapper.selectMensByUserId(userId);
+    }
 }

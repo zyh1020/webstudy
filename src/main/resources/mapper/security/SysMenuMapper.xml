@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zyh.webstudy.mapper.security.SysMenuMapper">
 
-    <resultMap id="selectMensWithRoleMap" type="com.zyh.webstudy.domain.security.SysMenu">
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.security.SysMenu">
         <id property="id" column="mId"/>
         <result property="parentId" column="mParentId"/>
         <result property="url" column="mUrl"/>
@@ -10,15 +11,18 @@
         <result property="component" column="mComponent"/>
         <result property="name" column="mName"/>
         <result property="icon" column="mIcon"/>
+        <result property="hidden" column="mHidden"/>
         <result property="enabled" column="mEnabled"/>
+    </resultMap>
+
+    <!-- 访问菜单需要哪些角色 -->
+    <resultMap id="selectMensWithRoleMap"  extends="baseResultMap" type="com.zyh.webstudy.domain.security.SysMenu">
         <collection property="sysRoles" ofType="com.zyh.webstudy.domain.security.SysRole">
             <id property="id" column="rId"/>
             <result property="name" column="rName"/>
             <result property="nameZh" column="rNameZh"/>
         </collection>
     </resultMap>
-
-    <!-- 访问菜单需要哪些角色 -->
     <select id="selectMensWithRole" resultMap="selectMensWithRoleMap">
         select
             mu.id AS mId ,
@@ -28,6 +32,7 @@
             mu.component AS mComponent,
             mu.name AS mName,
             mu.icon AS mIco,
+            mu.hidden AS mHidden,
             mu.enabled	AS mEnabled,
             ro.id AS rId,
             ro.name AS rName,
@@ -38,5 +43,52 @@
         where rId is not null
         ORDER BY mId
     </select>
+
+    <!-- 通过用户id查询菜单 -->
+    <resultMap id="selectMensByUserIdMap" extends="baseResultMap" type="com.zyh.webstudy.domain.security.SysMenu">
+        <collection property="children" ofType="com.zyh.webstudy.domain.security.SysMenu">
+            <id property="id" column="cId"/>
+            <result property="parentId" column="cParentId"/>
+            <result property="url" column="cUrl"/>
+            <result property="path" column="cPath"/>
+            <result property="component" column="cComponent"/>
+            <result property="name" column="cName"/>
+            <result property="icon" column="cIcon"/>
+            <result property="hidden" column="cHidden"/>
+            <result property="enabled" column="cEnabled"/>
+        </collection>
+    </resultMap>
+    <select id="selectMensByUserId" resultMap="selectMensByUserIdMap">
+    select
+        smp.id as mId,
+        smp.parentId as mParentId,
+        smp.url as mUrl,
+        smp.path as mPath,
+        smp.component as mComponent,
+        smp.name as mName,
+        smp.icon as mIcon,
+        smp.hidden as mHidden,
+        smp.enabled as mEnabled,
+        smc.id as cId,
+        smc.parentId as cParentId,
+        smc.url as cUrl,
+        smc.path as cPath,
+        smc.component as cComponent,
+        smc.name as cName,
+        smc.icon as cIcon,
+        smc.hidden as cHidden,
+        smc.enabled as cEnabled
+    from
+      sys_menu smp
+      LEFT JOIN sys_menu smc on smp.id = smc.parentId
+      LEFT JOIN sys_menu_role smr on smp.id = smr.mid
+      LEFT join sys_user_role sur on sur.rid = smr.rid
+    where
+      smc.id is not null
+      and sur.uid = #{userId}
+    order by smp.id
+
+    </select>
+
 
 </mapper>

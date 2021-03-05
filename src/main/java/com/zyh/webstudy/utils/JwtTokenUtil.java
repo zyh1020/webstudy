@@ -42,7 +42,7 @@ public class JwtTokenUtil {
     private String generateToken(Map <String,Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + tokeneCpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + tokeneCpiration*1000))
                 .signWith(SignatureAlgorithm.HS512,tokenSignKey)
                 .compact();
     }
@@ -95,7 +95,7 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token)
                 .getBody();
         } catch (Exception e) {
-            e.printStackTrace();
+            claims = null;
         }
         return claims;
     }
