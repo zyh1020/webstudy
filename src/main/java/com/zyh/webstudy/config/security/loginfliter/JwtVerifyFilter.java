@@ -44,7 +44,7 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
                 // 判断jwt是否有效
                 if(jwtTokenUtil.validateToken(token,userDetails.getUsername())){
-                    UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authResult);
                 }
             }

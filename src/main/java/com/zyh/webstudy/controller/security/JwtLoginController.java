@@ -1,5 +1,6 @@
 package com.zyh.webstudy.controller.security;
 
+import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.ResponseJsonUtil;
 import com.zyh.webstudy.utils.ResultUtil;
@@ -23,7 +24,7 @@ import java.security.Principal;
 * 用于登录
 *
 * */
-@Api("登录退出")
+
 @RestController
 public class JwtLoginController {
 
@@ -66,7 +67,9 @@ public class JwtLoginController {
         if(null == principal){
             return ResultUtil.error("获取用户信息失败");
         }else{
-            return ResultUtil.success("获取用户信息成功",principal);
+            SysUser sysUser = sysUserService.findUserByUserName(principal.getName());
+            sysUser.setPassword("");
+            return ResultUtil.success("获取用户信息成功",sysUser);
         }
     }
 
