@@ -10,4 +10,6 @@ public interface SysMenuService {
     public List<SysMenu> selectMensWithRole();
     //
     public List<SysMenu> findMensByUserId(Integer userId);
+    // 查询所有菜单
+    public List<SysMenu> findAllAuthority();
 }

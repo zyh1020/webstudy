@@ -9,4 +9,6 @@ public interface SysMenuMapper {
     public List<SysMenu> selectMensWithRole();
     // 根据用户id查询用户的菜单列表
     public List<SysMenu> selectMensByUserId(Integer userId);
+    // 查询所有菜单权限
+    public List<SysMenu> selectMensAll();
 }

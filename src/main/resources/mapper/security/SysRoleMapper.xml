@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zyh.webstudy.mapper.security.SysRoleMapper">
 
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.security.SysRole">
+        <id property="id" column="rId"/>
+        <result property="name" column="rName"/>
+        <result property="nameZh" column="rNameZh"/>
+    </resultMap>
 
+       <!-- 查询所有角色 -->
+      <select id="selectAllRoles" resultMap="baseResultMap">
+          select
+             sy.id as rId,
+             sy.name as rName,
+             sy.nameZh as rNameZh
+          from
+            sys_role sy
+      </select>
 
 </mapper>

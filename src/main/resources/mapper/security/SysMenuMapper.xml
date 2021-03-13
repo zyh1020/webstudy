@@ -91,4 +91,20 @@
     </select>
 
 
+    <!-- 查询所有权限 -->
+    <select id="selectMensAll" resultMap="baseResultMap">
+        select
+            smp.id as mId,
+            smp.parentId as mParentId,
+            smp.url as mUrl,
+            smp.path as mPath,
+            smp.component as mComponent,
+            smp.name as mName,
+            smp.icon as mIcon,
+            smp.hidden as mHidden,
+            smp.enabled as mEnabled
+        from
+          sys_menu smp
+    </select>
+
 </mapper>

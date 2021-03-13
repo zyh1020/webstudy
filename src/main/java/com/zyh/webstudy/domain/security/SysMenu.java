@@ -20,6 +20,8 @@ public class SysMenu implements Serializable {
     private String icon;
     private Boolean hidden;
     private Boolean enabled;
+    /* 菜单层级 */
+    private Integer level;
     /* 角色：表示访问这样的url需要哪些角色 */
     private List<SysRole> sysRoles;
     /* 子菜单 */

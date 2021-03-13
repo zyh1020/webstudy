@@ -17,17 +17,25 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/system/cfg")
+@RequestMapping("/system/menus")
 public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
     @ApiOperation("根据用户id查询菜单列表")
-    @GetMapping("/menus")
-    public ResultUtil getMeus(){
+    @GetMapping("/getMenusByUserId")
+    public ResultUtil getMenusByUserId(){
         // 获取登录后的用户
         SysUser sysUser = (SysUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<SysMenu> menus = sysMenuService.findMensByUserId(sysUser.getId());
         return ResultUtil.success("菜单列表",menus);
     }
 
+
+    @ApiOperation("查询所有的权限")
+    @GetMapping("/getAllAuthority")
+    public ResultUtil  getAllAuthority(){
+        // 获取登录后的用户
+        List<SysMenu> allAuthority = sysMenuService.findAllAuthority();
+        return ResultUtil.success("获取权限列表成功",allAuthority);
+    }
 }
