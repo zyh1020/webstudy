@@ -8,9 +8,8 @@
         <result property="name" column="rName"/>
         <result property="nameZh" column="rNameZh"/>
     </resultMap>
-
-       <!-- 查询所有角色 -->
-      <select id="selectAllRoles" resultMap="baseResultMap">
+     <!-- 查询所有角色 -->
+    <select id="selectAllRoles" resultMap="baseResultMap">
           select
              sy.id as rId,
              sy.name as rName,
@@ -18,5 +17,21 @@
           from
             sys_role sy
       </select>
+    <!-- 为角色分配权限 -->
+    <insert id="insertMenus" parameterType="com.zyh.webstudy.domain.security.SysRelation">
+        insert into sys_menu_role(mid,rid)
+        values
+        <foreach collection="list" item="sysRelation" separator=",">
+            (
+              #{sysRelation.fId},
+              #{sysRelation.eId}
+            )
+        </foreach>
+    </insert>
+    <!-- 清空某个角色的权限 -->
+    <delete id="deleteRoleofMenus" parameterType="java.lang.Integer">
+        delete from sys_menu_role
+        where rid = #{roleId}
+    </delete>
 
 </mapper>

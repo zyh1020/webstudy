@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 
@@ -37,5 +36,13 @@ public class SysMenuController {
         // 获取登录后的用户
         List<SysMenu> allAuthority = sysMenuService.findAllAuthority();
         return ResultUtil.success("获取权限列表成功",allAuthority);
+    }
+
+    @ApiOperation("删除菜单")
+    @GetMapping("/removeMenu")
+    public ResultUtil removeMenu(String mId){
+        // 获取登录后的用户
+        sysMenuService.removeMenu(Integer.parseInt(mId));
+        return ResultUtil.success("删除菜单成功");
     }
 }

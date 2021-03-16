@@ -3,6 +3,7 @@ package com.zyh.webstudy.service.security.impl;
 import com.zyh.webstudy.domain.security.SysMenu;
 import com.zyh.webstudy.mapper.security.SysMenuMapper;
 import com.zyh.webstudy.service.security.SysMenuService;
+import com.zyh.webstudy.utils.TreeMenusUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,43 +30,34 @@ public class SysMenuSeviceImpl implements SysMenuService {
         // ①，查询所有的菜单
         List<SysMenu> sysMenus = sysMenuMapper.selectMensAll();
         // ②，将菜单封装成树型结构
-        List<SysMenu> resultSysMenus = buildTreeMenus(sysMenus);
+        List<SysMenu> resultSysMenus = TreeMenusUtil.buildTreeMenus(sysMenus);
         return resultSysMenus;
     }
 
-    /* 将菜单封装成树型结构 */
-    private List<SysMenu> buildTreeMenus(List<SysMenu> sysMenus) {
-        // 最终封装的结果集
-        List<SysMenu> findMeuns = new ArrayList<>();
+    /* 删除菜单 */
+    @Override
+    public void removeMenu(Integer mId) {
 
-        // ①，获得入口，即得到层级为1的父节点，
-        for(SysMenu currentSysMenu: sysMenus){
-            if(0 == currentSysMenu.getParentId()){
-                currentSysMenu.setLevel(1);
-                // ②，调用查询子菜单
-                // ③，存储在最终的结果集中
-                findMeuns.add(selectChildren(currentSysMenu,sysMenus));
-            }
-        }
-        return findMeuns;
+        // ①，deleteIds用于存储需要删除的id
+        List<Integer> deleteIds = new ArrayList<>();
+        deleteIds.add(mId);
+        // ②，删除的id存储在deleteIds中
+        selectDeleteIds(mId,deleteIds);
+        sysMenuMapper.deleteMenusByIds(deleteIds);
     }
 
-    /* 递归查询子节点 */
-    private SysMenu selectChildren(SysMenu currentSysMenu, List<SysMenu> sysMenus) {
-
-        // childrens用于存储sysMenu的子节点
-        List<SysMenu> childrens = new ArrayList<>();
-
-        // ①，遍历所有的sysMenus
-        for(SysMenu ischildren : sysMenus){
-            if(currentSysMenu.getId() == ischildren.getParentId()){ // 判断是否是当前节点的子节点
-                Integer level = currentSysMenu.getLevel() + 1;
-                ischildren.setLevel(level);
-                // ②，递归调用
-                childrens.add(selectChildren(ischildren,sysMenus));
-            }
+    /* 将需要删除的id存储在deleteIds中 */
+    private void selectDeleteIds(Integer mId, List<Integer> deleteIds) {
+        // ①，查询mId的子菜单
+        List<SysMenu> childrens = sysMenuMapper.selectMenuOfChildrens(mId);
+        // 遍历
+        for(SysMenu sysMenu : childrens){
+            Integer sysMenuId = sysMenu.getId();
+            deleteIds.add(sysMenuId);
+            // ②，递归
+            selectDeleteIds(sysMenuId,deleteIds);
         }
-        currentSysMenu.setChildren(childrens);
-        return currentSysMenu;
     }
+
+
 }

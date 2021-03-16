@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
+import java.util.List;
 
 // 角色
 @Data
@@ -14,6 +15,8 @@ public class SysRole implements GrantedAuthority, Serializable {
     private Integer id;
     private String name;
     private String nameZh;
+    /* 拥有的菜单 */
+    private List<SysMenu> sysMenus;
     @Override
     public String getAuthority() {
         return name;

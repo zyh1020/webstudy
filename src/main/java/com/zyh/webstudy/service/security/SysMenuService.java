@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface SysMenuService {
     // 访问菜单需要那些角色
-    public List<SysMenu> selectMensWithRole();
+    List<SysMenu> selectMensWithRole();
     //
-    public List<SysMenu> findMensByUserId(Integer userId);
+    List<SysMenu> findMensByUserId(Integer userId);
     // 查询所有菜单
-    public List<SysMenu> findAllAuthority();
+    List<SysMenu> findAllAuthority();
+    // 删除菜单
+    void removeMenu(Integer mId);
 }
