@@ -4,7 +4,7 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.zyh.webstudy.service.ali.OssService;
 import com.zyh.webstudy.utils.CommonUtil;
-import com.zyh.webstudy.utils.OssPropertiesUtil;
+import com.zyh.webstudy.utils.AccessPropertiesUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,10 +19,10 @@ public class OssServiceImpl implements OssService {
     public String uploadImage(MultipartFile file) {
 
         // ①，获取配置
-        String endpoint = OssPropertiesUtil.END_POINT;
-        String accessKeyId =  OssPropertiesUtil.ACCESS_KEY_ID;
-        String accessKeySecret = OssPropertiesUtil.ACCESS_KEY_SECRET;
-        String bucketName = OssPropertiesUtil.BUCKET_NAME;
+        String endpoint = AccessPropertiesUtil.END_POINT;
+        String accessKeyId =  AccessPropertiesUtil.ACCESS_KEY_ID;
+        String accessKeySecret = AccessPropertiesUtil.ACCESS_KEY_SECRET;
+        String bucketName = AccessPropertiesUtil.BUCKET_NAME;
 
         String filePath = new DateTime().toString("yyyy/MM/dd");
         String fileName = filePath + "/" +CommonUtil.getUUID()+"-"+file.getOriginalFilename();
