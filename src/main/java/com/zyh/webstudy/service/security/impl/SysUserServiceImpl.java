@@ -61,11 +61,12 @@ public class SysUserServiceImpl implements SysUserService {
             sysRelation.setEId(Integer.parseInt(roleId));
             sysRelations.add(sysRelation);
         }
-
         // ②，删除原来的角色信息
         sysUserMapper.clearUserOfRoles(Integer.parseInt(userId));
-        // ③，批量插入新的
-        sysUserMapper.insertUserOfRoles(sysRelations);
+        if(sysRelations.size() > 0){
+            // ③，批量插入新的
+            sysUserMapper.insertUserOfRoles(sysRelations);
+        }
     }
 
 

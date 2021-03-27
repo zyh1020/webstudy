@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class WebstudyApplicationTests {
@@ -34,6 +36,19 @@ class WebstudyApplicationTests {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
+    @Test
+    void test10() {
+
+        List<Integer> deleteIds = new ArrayList<>();
+        deleteIds.add(13);
+        deleteIds.add(14);
+
+        // ②，创建删除参数
+        Map<String,Object> params = new HashMap<>();
+        params.put("roleId",1);
+        params.put("deleteIds",deleteIds);
+        sysRoleMapper.deleteRoleMenus(params);
+    }
 
     @Test
     void test09() {

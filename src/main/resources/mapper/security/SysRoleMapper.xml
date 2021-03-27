@@ -34,4 +34,14 @@
         where rid = #{roleId}
     </delete>
 
+    <!-- 删除角色的某些权限 -->
+    <delete id="deleteRoleMenus" parameterType="java.util.HashMap">
+        delete from
+          sys_menu_role
+        where rId = #{roleId}
+        <foreach collection="deleteIds" open=" and mid in(" close=")" item="deleteId" separator="," >
+            #{deleteId}
+        </foreach>
+    </delete>
+
 </mapper>

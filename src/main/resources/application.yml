@@ -12,3 +12,14 @@ jwt:
 
 mybatis:
   mapper-locations:  classpath:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+aliyun:
+  oss:
+    file:
+      endPoint: oss-cn-beijing.aliyuncs.com
+      accessKeyId: LTAI5t9Etz7yAA3kXFkRa9Ak
+      accessKeySecret: cHKAFH2uZmtzgIFfUwAHSmBu3nGmuY
+      bucketName: webstudy

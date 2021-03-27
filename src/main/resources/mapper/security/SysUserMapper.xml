@@ -63,6 +63,7 @@
             sys_user us
             LEFT JOIN sys_user_role usro ON us.id = usro.uid
             LEFT JOIN sys_role ro ON usro.rid = ro.id
+        order by uId
     </select>
 
     <!-- 清空某个用户的角色信息 -->

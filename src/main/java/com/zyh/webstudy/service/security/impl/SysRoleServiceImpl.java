@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
@@ -51,13 +53,48 @@ public class SysRoleServiceImpl implements SysRoleService {
         sysRoleMapper.deleteRoleofMenus(Integer.parseInt(roleId));
         // 批量插入
         sysRoleMapper.insertMenus(sysRelations);
-
     }
 
     // ③，简单的获取所有的角色
     @Override
     public List<SysRole> getAllRoles() {
         return sysRoleMapper.selectAllRoles();
+    }
+
+    // ④，删除角色的某个权限
+    @Override
+    public List<SysMenu> delteRoleMenus(String roleId, String menusId) {
+        int mId = Integer.parseInt(menusId);
+        // ①，获取menusId的所有的子
+        List<Integer> deleteIds = new ArrayList<>();
+        deleteIds.add(mId);
+        selectDeleteIds(mId,deleteIds);
+
+        // ②，创建删除参数
+        Map<String,Object> params = new HashMap<>();
+        params.put("roleId",Integer.parseInt(roleId));
+        params.put("deleteIds",deleteIds);
+
+        // ③，批量删除
+        sysRoleMapper.deleteRoleMenus(params);
+
+        // ④，查询最新权限
+        List<SysMenu> sysMenus = sysMenuMapper.selectMenusByRolesId(Integer.parseInt(roleId));
+        List<SysMenu> resultMenus = TreeMenusUtil.buildTreeMenus(sysMenus);
+        return resultMenus;
+    }
+
+    /* 将需要删除的id存储在deleteIds中 */
+    private void selectDeleteIds(Integer mId, List<Integer> deleteIds) {
+        // ①，查询mId的子菜单
+        List<SysMenu> childrens = sysMenuMapper.selectMenuOfChildrens(mId);
+        // 遍历
+        for(SysMenu sysMenu : childrens){
+            Integer sysMenuId = sysMenu.getId();
+            deleteIds.add(sysMenuId);
+            // ②，递归
+            selectDeleteIds(sysMenuId,deleteIds);
+        }
     }
 
 }

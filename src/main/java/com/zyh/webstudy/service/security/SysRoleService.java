@@ -15,5 +15,6 @@ public interface SysRoleService {
     // ③，简单的获取所有角色
     List<SysRole> getAllRoles();
 
-
+    // ④，删除角色的某个权限并返回最新角色权限
+    List<SysMenu> delteRoleMenus(String roleId, String menusId);
 }

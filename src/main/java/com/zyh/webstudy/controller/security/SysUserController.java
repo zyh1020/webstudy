@@ -6,9 +6,7 @@ import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.ResultUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +25,8 @@ public class SysUserController {
     }
 
     @ApiOperation("为用户分配角色")
-    @GetMapping("/distributionRoles")
-    public ResultUtil getAllUser(String userId,String[] rolesId){
+    @PostMapping("/distributionRoles")
+    public ResultUtil getAllUser(@RequestParam(value = "userId")String userId, @RequestParam(value = "rolesId", required = false)String[] rolesId){
         sysUserService.distributionRoles(userId,rolesId);
         return ResultUtil.success("为用户分配角色成功");
     }
