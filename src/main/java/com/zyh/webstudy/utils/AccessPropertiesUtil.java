@@ -23,7 +23,7 @@ public class AccessPropertiesUtil implements InitializingBean {
     private String bucketName; // oss的bucket名称
 
     @Value("${aliyun.msm.regionId}")
-    private String regionId; // 短信发送来源
+    private String msmRegionId; // 短信发送来源
 
     @Value("${aliyun.msm.signName}")
     private String signName; // 短信签名
@@ -31,13 +31,17 @@ public class AccessPropertiesUtil implements InitializingBean {
     @Value("${aliyun.msm.templateCode}")
     private String templateCode; // 短信模板
 
+    @Value("${aliyun.video.regionId}")
+    private String videoRegionId; // 视频点播来源
+
     public static String END_POINT;
     public static String ACCESS_KEY_ID;
     public static String ACCESS_KEY_SECRET;
     public static String BUCKET_NAME;
-    public static String REGION_ID;
+    public static String MSM_REGION_ID;
     public static String SIGN_NAME;
     public static String TEMPLATE_CODE;
+    public static String VIDEO_REGION_ID;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -45,8 +49,9 @@ public class AccessPropertiesUtil implements InitializingBean {
         ACCESS_KEY_ID = accessKeyId;
         ACCESS_KEY_SECRET = accessKeySecret;
         BUCKET_NAME = bucketName;
-        REGION_ID = regionId;
+        MSM_REGION_ID = msmRegionId;
         SIGN_NAME = signName;
         TEMPLATE_CODE = templateCode;
+        VIDEO_REGION_ID = videoRegionId;
     }
 }

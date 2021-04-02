@@ -24,14 +24,18 @@ public class ResultUtil {
     public static ResultUtil success(String message) {
         return new ResultUtil(true,200,message,null);
     }
+    public static ResultUtil success(Object data) {
+        return new ResultUtil(true,200,null,data);
+    }
     public static ResultUtil success(String message,Object data) {
         return new ResultUtil(true,200,message,data);
     }
+
+
     // 失败的静态方法
     public static ResultUtil error(String message) {
         return new ResultUtil(false,401,message,null);
     }
-
     public static ResultUtil error(Integer code,String message) {
         return new ResultUtil(false,code,message,null);
     }

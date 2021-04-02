@@ -77,19 +77,40 @@
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>4.5.3</version>
         </dependency>
+        <!-- 视频点播 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-vod</artifactId>
+            <version>2.15.11</version>
+        </dependency>
+        <!-- 视频上传 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-sdk-vod-upload</artifactId>
+            <version>1.4.13</version>
+        </dependency>
+        <!-- json处理 -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20170516</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.28</version>
+        </dependency>
 
         <!-- 日期处理工具类 -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.10.1</version>
-        </dependency>
-
-        <!-- json处理 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.28</version>
         </dependency>
 
         <!--swagger-->

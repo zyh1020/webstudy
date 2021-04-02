@@ -19,7 +19,7 @@ public class MsmServiceImpl implements MsmService {
     public boolean sendVerificationCode(String phone, Map<String,Object> params) {
 
         // 配置信息
-        DefaultProfile profile = DefaultProfile.getProfile(AccessPropertiesUtil.REGION_ID, AccessPropertiesUtil.ACCESS_KEY_ID, AccessPropertiesUtil.ACCESS_KEY_SECRET);
+        DefaultProfile profile = DefaultProfile.getProfile(AccessPropertiesUtil.MSM_REGION_ID, AccessPropertiesUtil.ACCESS_KEY_ID, AccessPropertiesUtil.ACCESS_KEY_SECRET);
         IAcsClient client = new DefaultAcsClient(profile);
 
         // 固定配置

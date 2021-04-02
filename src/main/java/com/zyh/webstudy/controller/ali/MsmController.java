@@ -1,6 +1,7 @@
 package com.zyh.webstudy.controller.ali;
 
 import com.zyh.webstudy.service.ali.MsmService;
+import com.zyh.webstudy.utils.CommonUtil;
 import com.zyh.webstudy.utils.ResultUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,13 @@ public class MsmController {
             return ResultUtil.error("号码不能为空！");
         }
         Map<String,Object> params = new HashMap<>();
-        params.put("code","6666"); // 键必须是code
+        // 获取随机数
+        String code = CommonUtil.getFourBitRandom();
+        params.put("code",code); // 键必须是code，为了和模板数据保持一致
 
         // 获取登录后的用户
         boolean isOk = msmService.sendVerificationCode(phone,params);
+
         if(isOk){
             return ResultUtil.success("验证码发送成功，请注意查收");
         }else {
