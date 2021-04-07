@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.course.CourseDetailsMapper">
+
+    <!-- 插入课程简介 -->
+    <insert id="insertOneCourse" parameterType="com.zyh.webstudy.domain.course.CourseDetails">
+          insert into
+          web_course_details(
+              id,
+              description,
+              `delete`,
+              createTime,
+              updateTime
+         )values (
+            #{id},
+            #{description},
+            #{delete},
+            #{createTime},
+            #{updateTime}
+         )
+    </insert>
+
+</mapper>

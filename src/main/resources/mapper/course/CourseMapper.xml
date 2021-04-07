@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.course.CourseMapper">
+
+    <!-- 插入课程-->
+    <insert id="insertOneCourse" parameterType="com.zyh.webstudy.domain.course.Course">
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into web_course(
+                personId,
+                sortId,
+                sortParentId,
+                title,
+                courseTime,
+                studyPersonNum,
+                lookPersonNum,
+                courseCover,
+                difficulty,
+                courseStatus,
+                `delete`,
+                createTime,
+                updateTime)
+        values (#{personId},#{sortId},#{sortParentId},#{title},
+                #{courseTime},#{studyPersonNum},#{lookPersonNum},#{courseCover},
+                #{difficulty},#{courseStatus},#{delete},#{createTime},#{updateTime})
+
+    </insert>
+
+</mapper>

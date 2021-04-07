@@ -6,10 +6,12 @@ import com.zyh.webstudy.domain.security.SysRelation;
 import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.mapper.security.SysMenuMapper;
 import com.zyh.webstudy.mapper.security.SysRoleMapper;
+import com.zyh.webstudy.service.course.CourseService;
 import com.zyh.webstudy.service.sort.CategoryService;
 import com.zyh.webstudy.service.security.SysMenuService;
 import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.JwtTokenUtil;
+import com.zyh.webstudy.vo.course.CourseVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +39,16 @@ class WebstudyApplicationTests {
 
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    CourseService courseService;
+
+    @Test
+    void test13() {
+        CourseVo courseVo = new CourseVo();
+        courseVo.setTitle("标题");
+        courseVo.setDescription("简介");
+        courseService.insertOneCourse(courseVo);
+    }
 
     @Test
     void test12() {
