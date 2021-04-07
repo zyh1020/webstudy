@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.sort.CategoryMapper">
+
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.sort.Category">
+        <id property="id" column="cId"/>
+        <result property="parentId" column="cParentId"/>
+        <result property="name" column="cName"/>
+        <result property="level" column="cLevel"/>
+        <result property="delete" column="cDelete"/>
+        <result property="createTime" column="cCreateTime"/>
+        <result property="updateTime" column="cUpdateTime"/>
+    </resultMap>
+
+    <!-- 插入数据 -->
+    <insert id="insertOneCategory" parameterType="com.zyh.webstudy.domain.sort.Category">
+        insert into web_sort(parentId,`name`,`level`,`delete`,createTime,updateTime)
+        values(#{parentId},#{name},#{level},#{delete},#{createTime},#{updateTime})
+    </insert>
+
+    <!-- 查询所有的一级分类 -->
+    <select id="selectAllOneLevelCategory" resultMap="baseResultMap">
+        select
+            ws.id as cId,
+            ws.parentId as cParentId,
+            ws.name  as cName,
+            ws.`level` as cLevel,
+            ws.`delete` as cDelete,
+            ws.createTime as cCreateTime,
+            ws.updateTime as cUpdateTime
+        from
+            web_sort ws
+        where
+            ws.`level` = 1
+    </select>
+
+    <!-- 通过parentId查询所有二级分类 -->
+    <select id="selectTwoLevelCategoryByParentId" resultMap="baseResultMap" parameterType="java.lang.Integer">
+        select
+            ws.id as cId,
+            ws.parentId as cParentId,
+            ws.name  as cName,
+            ws.`level` as cLevel,
+            ws.`delete` as cDelete,
+            ws.createTime as cCreateTime,
+            ws.updateTime as cUpdateTime
+        from
+            web_sort ws
+        where
+            ws.`level` = 2
+            and ws.parentId = #{parentId}
+    </select>
+
+    <!-- 删除分类 -->
+    <delete id="deleteOneCategory" parameterType="com.zyh.webstudy.domain.sort.Category">
+        delete from web_sort
+        where
+          id = #{id}
+    </delete>
+
+    <!-- 修改分类名称 -->
+    <select id="updateOneCategory" parameterType="com.zyh.webstudy.domain.sort.Category">
+        update
+            web_sort
+        set name = #{name}
+        where
+            id = #{id}
+    </select>
+
+</mapper>

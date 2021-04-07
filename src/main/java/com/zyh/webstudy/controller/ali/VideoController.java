@@ -48,15 +48,22 @@ public class VideoController {
 
     @ApiOperation("删除视频")
     @PostMapping("/deleteVedio")
-    public ResultUtil deleteVedio(){
-        return ResultUtil.success("删除视频成功！");
+    public ResultUtil deleteVedio(String vedioId){
+        boolean b = videoService.deleteVedio(vedioId);
+        if(b){
+            return ResultUtil.success("删除视频成功！");
+        }else {
+            return ResultUtil.error("删除视频失败！");
+        }
+
     }
 
 
     @ApiOperation("获取视频播放凭证")
     @PostMapping("/getVedio")
-    public ResultUtil getVedio(){
-        return ResultUtil.success("获取视频播放凭证成功！");
+    public ResultUtil getVedio(String vedioId){
+        String playId = videoService.getVideoPlay(vedioId);
+        return ResultUtil.success("获取视频播放凭证成功！",playId);
     }
 
 }

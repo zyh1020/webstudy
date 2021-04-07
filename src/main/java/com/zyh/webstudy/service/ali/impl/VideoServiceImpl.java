@@ -9,10 +9,11 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoResponse;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.zyh.webstudy.service.ali.VideoService;
 import com.zyh.webstudy.utils.AccessPropertiesUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 
@@ -57,15 +58,51 @@ public class VideoServiceImpl implements VideoService {
       *@Date: 2021/4/2 14:45
      **/
     @Override
-    public String deleteVedio(String vedioIds) {
+    public boolean deleteVedio(String vedioIds) {
         // 初始化
         DefaultAcsClient client  = initVodClient();
         // ①，创建请求和响应
         DeleteVideoRequest request = new DeleteVideoRequest();
         DeleteVideoResponse response = new DeleteVideoResponse();
+        // ②，封装参数
+        request.setVideoIds(vedioIds);//支持传入多个视频ID，多个用逗号分隔
+        // ③，发送请求
+        try {
+            response = client.getAcsResponse(request);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
+    }
 
-        return null;
+    /**
+      *@Description: 获取视频播放凭证
+      *@Param: [vedioId]
+      *@return: java.lang.String 
+      *@Author: zyh
+      *@Date: 2021/4/5 16:28
+     **/
+    @Override
+    public String getVideoPlay(String vedioId) {
+        // 初始化
+        DefaultAcsClient client  = initVodClient();
+        // ①，创建请求和响应
+        GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+        GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
+        // ②，封装参数
+        request.setVideoId(vedioId);
+        // ③，发送请求
+        try {
+            response = client.getAcsResponse(request);
+            // ④，解析请求
+            return response.getPlayAuth();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
 

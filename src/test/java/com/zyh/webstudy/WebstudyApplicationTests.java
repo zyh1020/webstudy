@@ -1,10 +1,12 @@
 package com.zyh.webstudy;
 
+import com.zyh.webstudy.domain.sort.Category;
 import com.zyh.webstudy.domain.security.SysMenu;
 import com.zyh.webstudy.domain.security.SysRelation;
 import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.mapper.security.SysMenuMapper;
 import com.zyh.webstudy.mapper.security.SysRoleMapper;
+import com.zyh.webstudy.service.sort.CategoryService;
 import com.zyh.webstudy.service.security.SysMenuService;
 import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.JwtTokenUtil;
@@ -12,10 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 class WebstudyApplicationTests {
@@ -35,6 +34,29 @@ class WebstudyApplicationTests {
 
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Test
+    void test12() {
+        List<Category> categories = categoryService.selectAllCategory();
+        for (Category category : categories) {
+            System.out.println(category);
+        }
+    }
+
+    @Test
+    void test11() {
+        Category category = new Category();
+        category.setUpdateTime(new Date());
+        category.setCreateTime(new Date());
+        category.setParentId(0);
+        category.setLevel(1);
+        category.setDelete(false);
+        category.setName("前端");
+        categoryService.insertOneCategory(category);
+    }
 
     @Test
     void test10() {

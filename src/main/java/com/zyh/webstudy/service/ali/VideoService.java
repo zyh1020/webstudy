@@ -3,5 +3,6 @@ import java.io.InputStream;
 
 public interface VideoService {
     String uploadVedio(String fileName, String fileTitle, InputStream inputStream);
-    String deleteVedio(String vedioIds);
+    boolean deleteVedio(String vedioIds);
+    String getVideoPlay(String vedioId);
 }
