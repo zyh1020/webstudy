@@ -27,5 +27,4 @@ public class Course {
     private Boolean delete;
     private Date createTime;
     private Date updateTime;
-
 }

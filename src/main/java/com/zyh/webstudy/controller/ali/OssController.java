@@ -19,7 +19,7 @@ public class OssController {
     private OssService ossService;
 
     @ApiOperation("上传图片")
-    @PostMapping("/uploadImage")
+        @PostMapping("/uploadImage")
     public ResultUtil uploadOssFileHeader(MultipartFile file){
         if(file == null){
             return ResultUtil.error("文件不存在！");

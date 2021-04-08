@@ -4,6 +4,10 @@ spring:
     password: 123456
     url: jdbc:mysql://localhost:3306/webstudy?useSSL=false&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 
 jwt:
   tokeneCpiration: 86400
@@ -17,9 +21,14 @@ mybatis:
 
 
 aliyun:
+  accessKeyId: LTAI5tBpZPq9Xzx24eKcREid
+  accessKeySecret: FAFZG32ZqsZFcqEpl56BCWzHZKzj06
   oss:
-    file:
-      endPoint: oss-cn-beijing.aliyuncs.com
-      accessKeyId: LTAI5t9Etz7yAA3kXFkRa9Ak
-      accessKeySecret: cHKAFH2uZmtzgIFfUwAHSmBu3nGmuY
-      bucketName: webstudy
+    endPoint: oss-cn-beijing.aliyuncs.com
+    bucketName: webstudy
+  msm:
+    regionId: cn-beijing
+    signName: web技术交流学习平台
+    templateCode: SMS_205886514
+  video:
+    regionId: cn-shanghai
