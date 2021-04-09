@@ -27,6 +27,15 @@ public class CategoryController {
         List<Category> categories = categoryService.selectAllCategory();
         return ResultUtil.success("查询所有分类成功",categories);
     }
+
+    @ApiOperation("查询所有分类-列表")
+    @GetMapping("/findAllList")
+    public ResultUtil findAllList(){
+        List<Category> categories = categoryService.selectAllCategoryList();
+        return ResultUtil.success("查询所有分类成功",categories);
+    }
+
+
     @ApiOperation("添加分类")
     @PostMapping("/addOneCategory")
     public ResultUtil addOneCategory(@RequestBody Category category){

@@ -11,4 +11,5 @@ public interface CategoryMapper {
     public List<Category> selectTwoLevelCategoryByParentId(Integer parentId);
     public void deleteOneCategory(Category category);
     public void updateOneCategory(Category category);
+    List<Category> selectAllCategoryList();
 }

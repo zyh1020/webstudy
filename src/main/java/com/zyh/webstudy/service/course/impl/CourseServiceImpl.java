@@ -25,8 +25,19 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseDetailsMapper courseDetailsMapper;
 
+    /**
+      *@Description:  插入课程信息
+      *@Param: [courseVo]
+      *@return: java.lang.Integer 
+      *@Author: zyh
+      *@Date: 2021/4/9 16:16
+     **/
     @Override
-    public Boolean insertOneCourse(CourseVo courseVo) {
+    public Integer insertOneCourse(CourseVo courseVo) {
+        courseVo.setPersonId(1); // 先写死
+        courseVo.setCourseStatus(0); // 未发布
+        courseVo.setLookPersonNum(0); // 无人观看
+        courseVo.setStudyPersonNum(0); // 无人学习
         courseVo.setCreateTime(new Date());
         courseVo.setUpdateTime(new Date());
         courseVo.setDelete(false);
@@ -43,6 +54,23 @@ public class CourseServiceImpl implements CourseService {
         // 课程表和课程简介表的id一致
         courseDetails.setId(course.getId());
         courseDetailsMapper.insertOneCourse(courseDetails);
-        return true;
+        return course.getId();
+    }
+
+    /**
+      *@Description: 查询课程信息
+      *@Param: [courseId]
+      *@return: com.zyh.webstudy.vo.course.CourseVo 
+      *@Author: zyh
+      *@Date: 2021/4/9 16:17
+     **/
+    @Override
+    public CourseVo selectOneCourse(Integer courseId) {
+        Course course = courseMapper.selectOneCourseInfo(courseId);
+        CourseDetails courseDetails = courseDetailsMapper.selectOneCourseDetails(courseId);
+        CourseVo courseVo = new CourseVo();
+        BeanUtils.copyProperties(course,courseVo);
+        BeanUtils.copyProperties(courseDetails,courseVo);
+        return courseVo;
     }
 }

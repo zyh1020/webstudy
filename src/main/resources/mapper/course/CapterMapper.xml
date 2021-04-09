@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.course.CapterMapper">
+
+    <!-- 基础结果集mapper -->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.course.Capter">
+        <id property="id" column="cId"/>
+        <result property="courseId" column="cCourseId"/>
+        <result property="title" column="cTitle"/>
+        <result property="delete" column="cDelete"/>
+        <result property="createTime" column="cCreateTime"/>
+        <result property="updateTime" column="cUpdateTime"/>
+    </resultMap>
+    <!-- 章节具有哪些小节 -->
+    <resultMap id="selectOneCourseAllCapterMap" type="com.zyh.webstudy.domain.course.Capter" extends="baseResultMap">
+        <collection property="vedios" ofType="com.zyh.webstudy.domain.course.Vedio">
+            <id property="id" column="vId"/>
+            <result property="courseId" column="vCourseId"/>
+            <result property="capterId" column="vCapterId"/>
+            <result property="vedioId" column="vVedioId"/>
+            <result property="title" column="vTitle"/>
+            <result property="delete" column="vDelete"/>
+            <result property="createTime" column="vCreateTime"/>
+            <result property="updateTime" column="vUpdateTime"/>
+        </collection>
+    </resultMap>
+    <!-- 查询某个课程下的所有章节信息 -->
+    <select id="selectOneCourseAllCapter" parameterType="java.lang.Integer" resultMap="selectOneCourseAllCapterMap">
+        select
+            wc.id as cId,
+            wc.courseId as cCourseId,
+            wc.title as cTitle,
+            wc.`delete` as cDelete,
+            wc.createTime as cCreateTime,
+            wc.updateTime as cUpdateTime,
+            wv.id as vId,
+            wv.courseId as vCourseId,
+            wv.capterId as vCapterId,
+            wv.vedioId  as vVedioId,
+            wv.title as vTitle,
+            wv.`delete`  as vDelete,
+            wv.createTime as vCreateTime,
+            wv.updateTime as vUpdateTime
+        from web_capter wc
+        left join web_vedio wv on wc.id = wv.capterId and wc.courseId = wv.courseId
+        where wc.id = #{courseId}
+    </select>
+    <!-- 插入章节信息 -->
+    <insert id="insertOneCapter" parameterType="com.zyh.webstudy.domain.course.Capter">
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into web_capter (
+            courseId,
+            title,
+            `delete`,
+            createTime,
+            updateTime
+        ) values(
+            #{courseId},
+            #{title},
+            #{delete},
+            #{createTime},
+            #{updateTime}
+        )
+    </insert>
+
+</mapper>

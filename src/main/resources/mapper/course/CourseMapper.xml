@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zyh.webstudy.mapper.course.CourseMapper">
 
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.course.Course">
+        <id property="id" column="cId"/>
+        <result property="personId" column="cPersonId"/>
+        <result property="sortId" column="cSortId"/>
+        <result property="sortParentId" column="cSortParentId"/>
+        <result property="title" column="cTitle"/>
+        <result property="courseTime" column="cCourseTime"/>
+        <result property="studyPersonNum" column="cStudyPersonNum"/>
+        <result property="lookPersonNum" column="cLookPersonNum"/>
+        <result property="courseCover" column="cCourseCover"/>
+        <result property="difficulty" column="cDifficulty"/>
+        <result property="courseStatus" column="cCourseStatus"/>
+        <result property="delete" column="cDelete"/>
+        <result property="createTime" column="cCreateTime"/>
+        <result property="updateTime" column="cUpdateTime"/>
+    </resultMap>
+
     <!-- 插入课程-->
     <insert id="insertOneCourse" parameterType="com.zyh.webstudy.domain.course.Course">
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
@@ -26,5 +44,26 @@
                 #{difficulty},#{courseStatus},#{delete},#{createTime},#{updateTime})
 
     </insert>
+    <!-- 查询课程信息 -->
+    <select id="selectOneCourseInfo" parameterType="java.lang.Integer" resultMap="baseResultMap">
+         select
+            wc.id as cId,
+            wc.personId as cPersonId,
+            wc.sortId as cSortId,
+            wc.sortParentId as cSortParentId,
+            wc.title as cTitle,
+            wc.courseTime as cCourseTime,
+            wc.studyPersonNum as cStudyPersonNum,
+            wc.lookPersonNum as cLookPersonNum,
+            wc.courseCover as cCourseCover,
+            wc.difficulty as cDifficulty,
+            wc.courseStatus as cCourseStatus,
+            wc.`delete` as cDelete,
+            wc.createTime as cCreateTime,
+            wc.updateTime as cUpdateTime
+         from web_course wc
+         where
+            wc.id  = #{courseId}
+    </select>
 
 </mapper>

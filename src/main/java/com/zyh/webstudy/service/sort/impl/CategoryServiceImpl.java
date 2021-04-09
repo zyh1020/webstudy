@@ -15,7 +15,8 @@ import java.util.List;
  * @date: 2021年04月06日 18:35
  */
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class 
+CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -90,5 +91,17 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean updateOneCategory(Category category) {
         categoryMapper.updateOneCategory(category);
         return true;
+    }
+
+    /**
+      *@Description:  查询所有分类以列表的形式
+      *@Param: []
+      *@return: java.util.List<com.zyh.webstudy.domain.sort.Category> 
+      *@Author: zyh
+      *@Date: 2021/4/9 9:39
+     **/
+    @Override
+    public List<Category> selectAllCategoryList() {
+        return categoryMapper.selectAllCategoryList();
     }
 }

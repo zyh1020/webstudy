@@ -9,4 +9,5 @@ public interface CategoryService {
     List<Category> selectAllCategory();
     Integer deleteOneCategory(Category category);
     boolean updateOneCategory(Category category);
+    List<Category> selectAllCategoryList();
 }

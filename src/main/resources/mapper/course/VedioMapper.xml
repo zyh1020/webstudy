@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.course.VedioMapper">
+
+    <!-- 插入一条数据 -->
+    <insert id="insertOneVedio" parameterType="com.zyh.webstudy.domain.course.Vedio">
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into web_vedio(
+            courseId,
+            capterId,
+            vedioId,
+            title
+            `delete`,
+            createTime,
+            updateTime
+        ) values(
+            #{courseId},
+            #{capterId},
+            #{title},
+            #{delete},
+            #{createTime},
+            #{updateTime}
+        )
+    </insert>
+
+</mapper>

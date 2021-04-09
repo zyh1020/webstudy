@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zyh.webstudy.mapper.course.CourseDetailsMapper">
 
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.course.CourseDetails">
+        <id property="id" column="cId"/>
+        <result property="description" column="cDescription"/>
+        <result property="delete" column="cDelete"/>
+        <result property="createTime" column="cCreateTime"/>
+        <result property="updateTime" column="cUpdateTime"/>
+    </resultMap>
+
     <!-- 插入课程简介 -->
     <insert id="insertOneCourse" parameterType="com.zyh.webstudy.domain.course.CourseDetails">
           insert into
@@ -19,5 +28,18 @@
             #{updateTime}
          )
     </insert>
+
+    <!-- 查询课程详情 -->
+    <select id="selectOneCourseDetails" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select
+	        wcd.id as cId,
+	        wcd.description as cDescription,
+	        wcd.`delete` as cDelete,
+	        wcd.createTime as cCreateTime,
+	        wcd.updateTime as cUpdateTime
+	    from web_course_details wcd
+	    where
+	        wcd.id  = #{courseId}
+    </select>
 
 </mapper>

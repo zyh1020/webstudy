@@ -68,4 +68,18 @@
             id = #{id}
     </select>
 
+    <!-- 查询所有分类 -->
+    <select id="selectAllCategoryList" resultMap="baseResultMap">
+        select
+            ws.id as cId,
+            ws.parentId as cParentId,
+            ws.name  as cName,
+            ws.`level` as cLevel,
+            ws.`delete` as cDelete,
+            ws.createTime as cCreateTime,
+            ws.updateTime as cUpdateTime
+        from
+            web_sort ws
+    </select>
+
 </mapper>
