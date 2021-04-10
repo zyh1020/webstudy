@@ -11,13 +11,14 @@
             courseId,
             capterId,
             vedioId,
-            title
+            title,
             `delete`,
             createTime,
             updateTime
         ) values(
             #{courseId},
             #{capterId},
+            #{vedioId},
             #{title},
             #{delete},
             #{createTime},

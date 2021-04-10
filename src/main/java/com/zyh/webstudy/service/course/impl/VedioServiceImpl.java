@@ -6,6 +6,8 @@ import com.zyh.webstudy.service.course.VedioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @Description: 小节或视频
  * @author: zyh
@@ -24,6 +26,9 @@ public class VedioServiceImpl implements VedioService {
      **/
     @Override
     public Integer addVedio(Vedio vedio) {
+        vedio.setDelete(false);
+        vedio.setCreateTime(new Date());
+        vedio.setUpdateTime(new Date());
         vedioMapper.insertOneVedio(vedio);
         return vedio.getId();
     }

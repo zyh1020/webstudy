@@ -6,6 +6,7 @@ import com.zyh.webstudy.service.course.CapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +41,9 @@ public class CapterServiceImpl implements CapterService {
      **/
     @Override
     public Integer addCapter(Capter capter) {
+        capter.setDelete(false);
+        capter.setCreateTime(new Date());
+        capter.setUpdateTime(new Date());
         capterMapper.insertOneCapter(capter);
         return capter.getId();
     }

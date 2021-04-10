@@ -16,7 +16,7 @@ public class Vedio {
     private Integer id;
     private Integer courseId;
     private Integer capterId;
-    private Integer vedioId;
+    private String vedioId;
     private String title;
     private Boolean delete;
     private Date createTime;

@@ -43,7 +43,7 @@
             wv.updateTime as vUpdateTime
         from web_capter wc
         left join web_vedio wv on wc.id = wv.capterId and wc.courseId = wv.courseId
-        where wc.id = #{courseId}
+        where wc.courseId = #{courseId}
     </select>
     <!-- 插入章节信息 -->
     <insert id="insertOneCapter" parameterType="com.zyh.webstudy.domain.course.Capter">

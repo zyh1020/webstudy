@@ -4,6 +4,7 @@ import com.zyh.webstudy.service.ali.VideoService;
 import com.zyh.webstudy.utils.ResultUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,8 +48,8 @@ public class VideoController {
     }
 
     @ApiOperation("删除视频")
-    @PostMapping("/deleteVedio")
-    public ResultUtil deleteVedio(String vedioId){
+    @PostMapping("/deleteVedio/{vedioId}")
+    public ResultUtil deleteVedio(@PathVariable String vedioId){
         boolean b = videoService.deleteVedio(vedioId);
         if(b){
             return ResultUtil.success("删除视频成功！");
