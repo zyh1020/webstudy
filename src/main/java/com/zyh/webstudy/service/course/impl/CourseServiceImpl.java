@@ -41,18 +41,16 @@ public class CourseServiceImpl implements CourseService {
         courseVo.setCreateTime(new Date());
         courseVo.setUpdateTime(new Date());
         courseVo.setDelete(false);
-
         // 创建插入对象
         Course course = new Course();
         CourseDetails courseDetails = new CourseDetails();
-
         // 为对象赋值
         BeanUtils.copyProperties(courseVo,course);
         BeanUtils.copyProperties(courseVo,courseDetails);
+        // ①，插入课程解基本信息
         courseMapper.insertOneCourse(course);
-
-        // 课程表和课程简介表的id一致
-        courseDetails.setId(course.getId());
+        // ②，插入课程简介信息
+        courseDetails.setId(course.getId());// 课程表和课程简介表的id一致
         courseDetailsMapper.insertOneCourse(courseDetails);
         return course.getId();
     }

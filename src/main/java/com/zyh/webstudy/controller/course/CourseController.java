@@ -22,7 +22,6 @@ public class CourseController {
     @ApiOperation("添加课程")
     @PostMapping("/addCourse")
     public ResultUtil addCourse(@RequestBody CourseVo courseVo){
-
         if(courseVo == null){
             return ResultUtil.error("参数不合法");
         }

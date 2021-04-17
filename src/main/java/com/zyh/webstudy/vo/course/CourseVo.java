@@ -1,5 +1,6 @@
 package com.zyh.webstudy.vo.course;
 
+import com.zyh.webstudy.domain.security.SysUser;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,4 +31,5 @@ public class CourseVo {
     private Date createTime;
     private Date updateTime;
     private String description;
+    private SysUser sysUser;
 }

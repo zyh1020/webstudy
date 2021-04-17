@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.community.AnswerMapper">
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.community.Answer">
+        <id property="id" column="aId"/>
+        <result property="personId" column="aPersonId"/>
+        <result property="problemId" column="aProblemId"/>
+        <result property="answerContent" column="aAnswerContent"/>
+        <result property="delete" column="aDelete"/>
+        <result property="createTime" column="aCreateTime"/>
+        <result property="updateTime" column="aUpdateTime"/>
+    </resultMap>
+
+    <!-- 带上答案所属人 -->
+    <resultMap id="selectAnswersMap" type="com.zyh.webstudy.domain.community.Answer" extends="baseResultMap">
+        <association property="sysUser" javaType="com.zyh.webstudy.domain.security.SysUser">
+            <id property="id" column="uId"/>
+            <result property="name" column="uName"/>
+            <result property="username" column="uUserName"/>
+            <result property="userAvatar" column="uUuserAvatar"/>
+        </association >
+    </resultMap>
+
+    <select id="selectAnswers" resultMap="selectAnswersMap" parameterType="java.lang.Integer">
+      select
+            wa.id as aId,
+            wa.personId as aPersonId,
+            wa.problemId as aProblemId,
+            wa.answerContent as aAnswerContent,
+            wa.`delete` as aDelete,
+            wa.createTime as aCreateTime,
+            wa.updateTime as aUpdateTime,
+            us.id AS uId,
+            us.name AS uName,
+            us.username AS uUserName,
+            us.userAvatar AS uUuserAvatar
+        from web_answer wa
+        left join sys_user us on wa.personId = us.id
+        where
+          wa.problemId  = #{problemId}
+    </select>
+
+    <!-- 添加回答 -->
+    <insert id="insertAnswer" parameterType="com.zyh.webstudy.domain.community.Answer">
+        insert into web_answer(
+          personId,
+          problemId,
+          answerContent,
+          `delete`,
+          createTime,
+          updateTime
+        )values(
+          #{personId},
+          #{problemId},
+          #{answerContent},
+          #{delete},
+          #{createTime},
+          #{updateTime}
+        )
+    </insert>
+</mapper>

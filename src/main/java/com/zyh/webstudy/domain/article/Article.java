@@ -1,4 +1,4 @@
-package com.zyh.webstudy.domain.course;
+package com.zyh.webstudy.domain.article;
 
 import com.zyh.webstudy.domain.security.SysUser;
 import lombok.Data;
@@ -7,26 +7,24 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 /**
- * @Description: 课程
+ * @Description: 文章
  * @author: zyh
- * @date: 2021年04月07日 17:31
+ * @date: 2021年04月17日 16:51
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Course {
+public class Article {
     private Integer id;
     private Integer personId;
     private Integer sortId;
-    private Integer sortParentId;
-    private String title;
-    private Integer courseTime;
-    private Integer studyPersonNum;
-    private Integer lookPersonNum;
-    private String courseCover;
-    private Integer difficulty;
-    private String courseStatus;
+    private Integer lookNum;
+    private Boolean isPulish;
+    private String articleTitle;
+    private String articleContent;
     private Boolean delete;
     private Date createTime;
     private Date updateTime;
+
+    private String sortName;
     private SysUser sysUser;
 }

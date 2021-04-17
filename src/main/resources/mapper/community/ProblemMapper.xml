@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.community.ProblemMapper">
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.community.Problem">
+        <id property="id" column="pId"/>
+        <result property="personId" column="pPersonId"/>
+        <result property="sortId" column="pSortId"/>
+        <result property="twoLevelSortName" column="pTwoLevelSortName"/>
+        <result property="lookNum" column="pLookNum"/>
+        <result property="problemTitle" column="pProblemTitle"/>
+        <result property="problemContent" column="pProblemContent"/>
+        <result property="delete" column="pDelete"/>
+        <result property="createTime" column="pCreateTime"/>
+        <result property="updateTime" column="pUpdateTime"/>
+    </resultMap>
+
+    <!-- 带上问题所属人 -->
+    <resultMap id="selectProblemsMap" type="com.zyh.webstudy.domain.community.Problem" extends="baseResultMap">
+        <association property="sysUser" javaType="com.zyh.webstudy.domain.security.SysUser">
+            <id property="id" column="uId"/>
+            <result property="name" column="uName"/>
+            <result property="username" column="uUserName"/>
+            <result property="userAvatar" column="uUuserAvatar"/>
+        </association >
+    </resultMap>
+
+    <!-- 问题列表 -->
+    <select id="selectProblems" resultMap="selectProblemsMap" parameterType="com.zyh.webstudy.domain.community.Problem">
+      select
+        wp.id as pId,
+        wp.personId as pPersonId,
+        wp.sortId as pSortId,
+        ws.name as pTwoLevelSortName,
+        wp.lookNum as pLookNum,
+        wp.problemTitle as pProblemTitle,
+        wp.problemContent as pProblemContent,
+        wp.`delete` as pDelete,
+        wp.createTime as pCreateTime,
+        wp.updateTime as pUpdateTime,
+        us.id AS uId,
+        us.name AS uName,
+        us.username AS uUserName,
+        us.userAvatar AS uUuserAvatar
+      from web_problem wp
+      left join sys_user us on wp.personId = us.id
+      left join web_sort ws on wp.sortId = ws.id
+      <where>
+          wp.delete = 0;
+          <if test="personId != null and personId != ''">
+              and wp.personId  = #{personId}
+          </if>
+          <if test="sortId != null and sortId != ''">
+              and wp.sortId  = #{sortId}
+          </if>
+          <if test="id != null and id != ''">
+              and wp.problemTitle like '%${problemTitle}%'
+          </if>
+      </where>
+
+    </select  >
+
+    <!-- 查询问题详情通过 问题id-->
+    <select id="selectProblemById" resultMap="selectProblemsMap" parameterType="java.lang.Integer">
+        select
+        wp.id as pId,
+        wp.personId as pPersonId,
+        wp.sortId as pSortId,
+        ws.name as pTwoLevelSortName,
+        wp.lookNum as pLookNum,
+        wp.problemTitle as pProblemTitle,
+        wp.problemContent as pProblemContent,
+        wp.`delete` as pDelete,
+        wp.createTime as pCreateTime,
+        wp.updateTime as pUpdateTime,
+        us.id AS uId,
+        us.name AS uName,
+        us.username AS uUserName,
+        us.userAvatar AS uUuserAvatar
+      from web_problem wp
+      left join sys_user us on wp.personId = us.id
+      left join web_sort ws on wp.sortId = ws.id
+      where
+         wp.id  = #{problemId}
+    </select>
+
+    <!-- 添加问题 -->
+    <insert id="inselectProbelm" parameterType="com.zyh.webstudy.domain.community.Problem">
+      insert into web_problem(
+           personId,
+           sortId,
+           lookNum,
+           problemTitle,
+           problemContent,
+           `delete`,
+           createTime,
+           updateTime
+       )values(
+            #{personId},
+            #{sortId},
+            #{lookNum},
+            #{problemTitle},
+            #{problemContent},
+            #{delete},
+            #{createTime},
+            #{updateTime}
+       )
+    </insert>
+</mapper>

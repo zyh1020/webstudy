@@ -4,10 +4,7 @@ import com.zyh.webstudy.service.ali.VideoService;
 import com.zyh.webstudy.utils.ResultUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -61,8 +58,8 @@ public class VideoController {
 
 
     @ApiOperation("获取视频播放凭证")
-    @PostMapping("/getVedio")
-    public ResultUtil getVedio(String vedioId){
+    @GetMapping("/getVedio/{vedioId}")
+    public ResultUtil getVedio(@PathVariable String vedioId){
         String playId = videoService.getVideoPlay(vedioId);
         return ResultUtil.success("获取视频播放凭证成功！",playId);
     }

@@ -73,11 +73,18 @@ CategoryServiceImpl implements CategoryService {
                 return 1;
             }
         }
-        // ②，判断是否还在使用
 
+        // ②，判断是否还在使用
+        if(isUse(category)){
+            return 2;
+        }
         // ③，删除分类
         categoryMapper.deleteOneCategory(category);
         return 0;
+    }
+
+    private boolean isUse(Category category){
+        return false;
     }
 
     /**

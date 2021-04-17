@@ -1,9 +1,11 @@
 package com.zyh.webstudy;
 
+import com.zyh.webstudy.domain.article.Article;
 import com.zyh.webstudy.domain.sort.Category;
 import com.zyh.webstudy.domain.security.SysMenu;
 import com.zyh.webstudy.domain.security.SysRelation;
 import com.zyh.webstudy.domain.security.SysUser;
+import com.zyh.webstudy.mapper.article.ArticleMapper;
 import com.zyh.webstudy.mapper.security.SysMenuMapper;
 import com.zyh.webstudy.mapper.security.SysRoleMapper;
 import com.zyh.webstudy.service.course.CourseService;
@@ -41,7 +43,21 @@ class WebstudyApplicationTests {
     CategoryService categoryService;
     @Autowired
     CourseService courseService;
-
+    @Autowired
+    ArticleMapper articleMapper;
+    @Test
+    void test14() {
+        Map<String,Object> map = new HashMap<>();
+        map.put("currentPage",0);
+        map.put("selectNum",5);
+        Article article = new Article();
+        article.setSortId(2);
+        map.put("condition",article);
+        List<Article> articles = articleMapper.pageFindArticleList(map);
+        for (Article article1 : articles) {
+            System.out.println(article1);
+        }
+    }
     @Test
     void test13() {
         CourseVo courseVo = new CourseVo();

@@ -26,7 +26,7 @@ public class SysUserController {
 
     @ApiOperation("为用户分配角色")
     @PostMapping("/distributionRoles")
-    public ResultUtil getAllUser(@RequestParam(value = "userId")String userId, @RequestParam(value = "rolesId", required = false)String[] rolesId){
+    public ResultUtil distrRoles(@RequestParam(value = "userId")String userId, @RequestParam(value = "rolesId", required = false)String[] rolesId){
         sysUserService.distributionRoles(userId,rolesId);
         return ResultUtil.success("为用户分配角色成功");
     }

@@ -20,6 +20,16 @@
         <result property="updateTime" column="cUpdateTime"/>
     </resultMap>
 
+    <!-- 带有上传人 -->
+    <resultMap id="selectOneCourseInfoMap" type="com.zyh.webstudy.domain.course.Course" extends="baseResultMap">
+        <association property="sysUser" javaType="com.zyh.webstudy.domain.security.SysUser">
+            <id property="id" column="uId"/>
+            <result property="name" column="uName"/>
+            <result property="username" column="uUserName"/>
+            <result property="userAvatar" column="uUuserAvatar"/>
+        </association >
+    </resultMap>
+
     <!-- 插入课程-->
     <insert id="insertOneCourse" parameterType="com.zyh.webstudy.domain.course.Course">
         <selectKey keyProperty="id" resultType="Integer" order="AFTER">
@@ -45,7 +55,7 @@
 
     </insert>
     <!-- 查询课程信息 -->
-    <select id="selectOneCourseInfo" parameterType="java.lang.Integer" resultMap="baseResultMap">
+    <select id="selectOneCourseInfo" parameterType="java.lang.Integer" resultMap="selectOneCourseInfoMap">
          select
             wc.id as cId,
             wc.personId as cPersonId,
@@ -60,8 +70,13 @@
             wc.courseStatus as cCourseStatus,
             wc.`delete` as cDelete,
             wc.createTime as cCreateTime,
-            wc.updateTime as cUpdateTime
+            wc.updateTime as cUpdateTime,
+            us.id AS uId,
+            us.name AS uName,
+            us.username AS uUserName,
+            us.userAvatar AS uUuserAvatar
          from web_course wc
+         left join sys_user us on wc.personId = us.id
          where
             wc.id  = #{courseId}
     </select>

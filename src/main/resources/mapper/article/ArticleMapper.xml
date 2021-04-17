@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.article.ArticleMapper">
+    <!-- 基础结果集mapper-->
+    <resultMap id="baseResultMap" type="com.zyh.webstudy.domain.article.Article">
+        <id property="id" column="aId"/>
+        <result property="personId" column="aPersonId"/>
+        <result property="sortId" column="aSortId"/>
+        <result property="lookNum" column="aLookNum"/>
+        <result property="sortName" column="aSortName"/>
+        <result property="isPulish" column="aIsPulish"/>
+        <result property="articleTitle" column="aArticleTitle"/>
+        <result property="articleContent" column="aArticleContent"/>
+        <result property="delete" column="aDelete"/>
+        <result property="createTime" column="aCreateTime"/>
+        <result property="updateTime" column="aUpdateTime"/>
+    </resultMap>
+
+    <!-- 带上问题所属人 -->
+    <resultMap id="pageFindArticleListMap" type="com.zyh.webstudy.domain.article.Article" extends="baseResultMap">
+        <association property="sysUser" javaType="com.zyh.webstudy.domain.security.SysUser">
+            <id property="id" column="uId"/>
+            <result property="name" column="uName"/>
+            <result property="username" column="uUserName"/>
+            <result property="userAvatar" column="uUuserAvatar"/>
+        </association >
+    </resultMap>
+
+
+    <!-- 插入一篇文章 -->
+    <insert id="insertOneArticle" parameterType="com.zyh.webstudy.domain.article.Article">
+       insert into
+        web_article(
+            personId,
+            sortId,
+            articleTitle,
+            articleContent,
+            isPulish,
+            lookNum,
+            `delete`,
+            createTime,
+            updateTime)
+        values(
+            #{personId},
+            #{sortId},
+            #{articleTitle},
+            #{articleContent},
+            #{isPulish},
+            #{lookNum},
+            #{delete},
+            #{createTime},
+            #{updateTime}
+        )
+
+    </insert>
+
+
+    <!-- 统计 -->
+    <select id="countPageFindArticleList" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(*)
+        from web_article wa
+        where
+        wa.isPulish = 1
+        <if test="condition != null and condition.sortId != null">
+            AND wa.sortId = #{condition.sortId}
+        </if>
+        <if test="condition != null and condition.articleTitle != null">
+            AND wa.articleTitle like '%${condition.articleTitle}%'
+        </if>
+    </select>
+    <!-- 分页查询 -->
+    <select id="pageFindArticleList" resultMap="pageFindArticleListMap" parameterType="java.util.Map">
+      select
+        wa.id as aId,
+        wa.personId as aPersonId,
+        wa.sortId as aSortId,
+        ws.name as aSortName,
+        wa.lookNum as aLookNum,
+        wa.isPulish as aIsPulish,
+        wa.articleTitle as aArticleTitle,
+        wa.articleContent as aArticleContent,
+        wa.`delete` as aDelete,
+        wa.createTime as aCreateTime,
+        wa.updateTime as aUpdateTime,
+        us.id AS uId,
+        us.name AS uName,
+        us.username AS uUserName,
+        us.userAvatar AS uUuserAvatar
+      from web_article wa
+      left join sys_user us on wa.personId = us.id
+      left join web_sort ws on wa.sortId = ws.id
+      where
+        wa.isPulish = 1
+        <if test="condition != null and condition.sortId != null">
+            AND wa.sortId = #{condition.sortId}
+        </if>
+        <if test="condition != null and condition.articleTitle != null">
+            AND wa.articleTitle like '%${condition.articleTitle}%'
+        </if>
+      order by aCreateTime
+      limit  #{currentPage},#{selectNum}
+    </select>
+
+</mapper>
