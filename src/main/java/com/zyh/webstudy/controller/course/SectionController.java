@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/cou/vedio")
-public class VedioController {
+public class SectionController {
 
     @Autowired
     private VedioService vedioService;

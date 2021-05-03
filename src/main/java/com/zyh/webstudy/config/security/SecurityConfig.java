@@ -104,6 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/hello",
                     "/error",
                     "/user/login",
+                    "/user/jwtLogin",
                     "/css/**",
                     "/js/**",
                     "/index.html",

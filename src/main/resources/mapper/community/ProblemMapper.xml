@@ -25,41 +25,6 @@
         </association >
     </resultMap>
 
-    <!-- 问题列表 -->
-    <select id="selectProblems" resultMap="selectProblemsMap" parameterType="com.zyh.webstudy.domain.community.Problem">
-      select
-        wp.id as pId,
-        wp.personId as pPersonId,
-        wp.sortId as pSortId,
-        ws.name as pTwoLevelSortName,
-        wp.lookNum as pLookNum,
-        wp.problemTitle as pProblemTitle,
-        wp.problemContent as pProblemContent,
-        wp.`delete` as pDelete,
-        wp.createTime as pCreateTime,
-        wp.updateTime as pUpdateTime,
-        us.id AS uId,
-        us.name AS uName,
-        us.username AS uUserName,
-        us.userAvatar AS uUuserAvatar
-      from web_problem wp
-      left join sys_user us on wp.personId = us.id
-      left join web_sort ws on wp.sortId = ws.id
-      <where>
-          wp.delete = 0;
-          <if test="personId != null and personId != ''">
-              and wp.personId  = #{personId}
-          </if>
-          <if test="sortId != null and sortId != ''">
-              and wp.sortId  = #{sortId}
-          </if>
-          <if test="id != null and id != ''">
-              and wp.problemTitle like '%${problemTitle}%'
-          </if>
-      </where>
-
-    </select  >
-
     <!-- 查询问题详情通过 问题id-->
     <select id="selectProblemById" resultMap="selectProblemsMap" parameterType="java.lang.Integer">
         select
@@ -106,4 +71,95 @@
             #{updateTime}
        )
     </insert>
+
+     <!-- 分页查询问题列表 -->
+    <select id="countPageFindProblemList" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select
+           count(*)
+        from web_problem wp
+        where
+            wp.`delete` = 0
+            <if test="condition != null and condition.sortId != null">
+                and wp.sortId = #{condition.sortId}
+            </if>
+            <if test="condition != null and condition.problemTitle != null">
+                and wp.title like '%${condition.problemTitle}%'
+            </if>
+    </select>
+    <select id="pageFindProblemList" resultMap="baseResultMap" parameterType="java.util.Map">
+        select
+            wp.id as pId,
+            wp.personId as pPersonId,
+            wp.sortId as pSortId,
+            ws.name as pTwoLevelSortName,
+            wp.lookNum as pLookNum,
+            wp.problemTitle as pProblemTitle,
+            wp.problemContent as pProblemContent,
+            wp.`delete` as pDelete,
+            wp.createTime as pCreateTime,
+            wp.updateTime as pUpdateTime
+        from web_problem wp
+        left join web_sort ws on wp.sortId = ws.id
+        where
+          wp.`delete` = 0
+          <if test="condition != null and condition.sortId != null">
+              and wp.sortId = #{condition.sortId}
+          </if>
+          <if test="condition != null and condition.problemTitle != null">
+              and wp.problemTitle like '%${condition.problemTitle}%'
+          </if>
+          order by pCreateTime desc
+          limit  #{currentPage},#{size}
+    </select>
+
+
+    <!-- 查询个人问题 -->
+    <select id="countSelectPersonOfProblems" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select
+          count(*)
+        from web_problem wp
+        left join web_sort ws on wp.sortId = ws.id
+        left join sys_user us on wp.personId = us.id
+        where
+        wp.`delete` = 0
+        and wp.personId = #{personId}
+    </select>
+    <select id="selectPersonOfProblems" resultMap="baseResultMap" parameterType="java.util.Map">
+        select
+        wp.id as pId,
+        wp.personId as pPersonId,
+        wp.sortId as pSortId,
+        ws.name as pTwoLevelSortName,
+        wp.lookNum as pLookNum,
+        wp.problemTitle as pProblemTitle,
+        wp.problemContent as pProblemContent,
+        wp.`delete` as pDelete,
+        wp.createTime as pCreateTime,
+        wp.updateTime as pUpdateTime
+        from web_problem wp
+        left join web_sort ws on wp.sortId = ws.id
+        left join sys_user us on wp.personId = us.id
+        where
+        wp.`delete` = 0
+        and wp.personId = #{personId}
+        order by pCreateTime desc
+        limit  #{currentPage},#{size}
+    </select>
+
+    <!-- 修改问题 -->
+    <update id="updateOneProblem" parameterType="com.zyh.webstudy.domain.community.Problem">
+       update web_problem
+        set
+        sortId = #{sortId},
+        problemTitle = #{problemTitle},
+        problemContent = #{problemContent}
+        where id = #{id}
+    </update>
+
+    <!-- 删除问题 -->
+    <delete id="deleteOneProblem" parameterType="java.lang.Integer">
+      delete from web_problem
+      where id = #{problemId}
+    </delete>
+
 </mapper>

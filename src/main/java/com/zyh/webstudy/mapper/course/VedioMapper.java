@@ -4,4 +4,6 @@ import com.zyh.webstudy.domain.course.Vedio;
 
 public interface VedioMapper {
     void insertOneVedio(Vedio vedio);
+
+    void deleteCourseOfVedios(Integer courseId);
 }

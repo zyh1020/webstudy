@@ -2,6 +2,7 @@ package com.zyh.webstudy.service.community.impl;
 
 import com.zyh.webstudy.domain.community.Problem;
 import com.zyh.webstudy.domain.security.SysUser;
+import com.zyh.webstudy.mapper.community.AnswerMapper;
 import com.zyh.webstudy.mapper.community.ProblemMapper;
 import com.zyh.webstudy.service.community.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 问题
@@ -22,18 +24,9 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Autowired
     private ProblemMapper problemMapper;
+    @Autowired
+    private AnswerMapper answerMapper;
 
-    /**
-      *@Description:  查询问题列表
-      *@Param: [problem]
-      *@return: java.util.List<com.zyh.webstudy.domain.community.Problem> 
-      *@Author: zyh
-      *@Date: 2021/4/16 21:34
-     **/
-    @Override
-    public List<Problem> findProblems(Problem problem) {
-        return problemMapper.selectProblems(problem);
-    }
     /**
       *@Description: 查询问题详情
       *@Param: [problemId]
@@ -56,5 +49,38 @@ public class ProblemServiceImpl implements ProblemService {
         problem.setDelete(false);
         problem.setLookNum(0);
         problemMapper.inselectProbelm(problem);
+    }
+
+    @Override
+    public Integer countPageSelectProblems(Map<String, Object> mapParams) {
+        return problemMapper.countPageFindProblemList(mapParams);
+    }
+
+    @Override
+    public List<Problem> pageSelectProblems(Map<String, Object> mapParams) {
+        return problemMapper.pageFindProblemList(mapParams);
+    }
+
+    @Override
+    public Integer countSelectPersonOfProblems(Map<String, Object> mapParams) {
+        return problemMapper.countSelectPersonOfProblems(mapParams);
+    }
+
+    @Override
+    public List<Problem> selectPersonOfProblems(Map<String, Object> mapParams) {
+        return problemMapper.selectPersonOfProblems(mapParams);
+    }
+
+    @Override
+    public void updateOneProblem(Problem problem) {
+        problemMapper.updateOneProblem(problem);
+    }
+
+    @Override
+    public void deleteOneProblem(Integer problemId) {
+        // 删除答案
+        answerMapper.deleteProblemOfAnswers(problemId);
+        // 删除问题
+        problemMapper.deleteOneProblem(problemId);
     }
 }

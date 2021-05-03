@@ -59,4 +59,12 @@
           #{updateTime}
         )
     </insert>
+
+    <!-- 删除某个问题的答案 -->
+    <delete id="deleteProblemOfAnswers" parameterType="java.lang.Integer">
+      delete from web_answer
+      where problemId = #{problemId}
+    </delete>
+
+
 </mapper>

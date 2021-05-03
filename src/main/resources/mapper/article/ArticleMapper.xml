@@ -54,8 +54,7 @@
 
     </insert>
 
-
-    <!-- 统计 -->
+    <!-- 文章查询 -->
     <select id="countPageFindArticleList" parameterType="java.util.Map" resultType="java.lang.Integer">
         select
             count(*)
@@ -69,7 +68,6 @@
             AND wa.articleTitle like '%${condition.articleTitle}%'
         </if>
     </select>
-    <!-- 分页查询 -->
     <select id="pageFindArticleList" resultMap="pageFindArticleListMap" parameterType="java.util.Map">
       select
         wa.id as aId,
@@ -102,4 +100,85 @@
       limit  #{currentPage},#{selectNum}
     </select>
 
+    <!-- 查询某个文章信息 -->
+    <select id="selectOneActicleById" resultMap="pageFindArticleListMap" parameterType="java.lang.Integer">
+      select
+        wa.id as aId,
+        wa.personId as aPersonId,
+        wa.sortId as aSortId,
+        ws.name as aSortName,
+        wa.lookNum as aLookNum,
+        wa.isPulish as aIsPulish,
+        wa.articleTitle as aArticleTitle,
+        wa.articleContent as aArticleContent,
+        wa.`delete` as aDelete,
+        wa.createTime as aCreateTime,
+        wa.updateTime as aUpdateTime,
+        us.id AS uId,
+        us.name AS uName,
+        us.username AS uUserName,
+        us.userAvatar AS uUuserAvatar
+      from web_article wa
+      left join sys_user us on wa.personId = us.id
+      left join web_sort ws on wa.sortId = ws.id
+      where
+        wa.`delete` = 0
+        And wa.id = #{articleId}
+    </select>
+
+    <!-- 个人中心的 -->
+    <select id="countPersonOfArticles" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+          count(*)
+        from web_article wa
+        left join sys_user us on wa.personId = us.id
+        where
+            wa.`delete` = 0
+            and us.id = #{personId}
+    </select>
+    <select id="selectOnePersonOfActicles" resultMap="pageFindArticleListMap" parameterType="java.util.Map">
+        select
+            wa.id as aId,
+            wa.personId as aPersonId,
+            wa.sortId as aSortId,
+            ws.name as aSortName,
+            wa.lookNum as aLookNum,
+            wa.isPulish as aIsPulish,
+            wa.articleTitle as aArticleTitle,
+            wa.articleContent as aArticleContent,
+            wa.`delete` as aDelete,
+            wa.createTime as aCreateTime,
+            wa.updateTime as aUpdateTime,
+            us.id AS uId,
+            us.name AS uName,
+            us.username AS uUserName,
+            us.userAvatar AS uUuserAvatar
+        from web_article wa
+        left join sys_user us on wa.personId = us.id
+        left join web_sort ws on wa.sortId = ws.id
+        where
+         wa.`delete` = 0
+         and us.id = #{personId}
+         order by aUpdateTime desc
+         limit  #{currentPage},#{selectNum}
+    </select>
+
+    <!-- 修改文章 -->
+    <update id="updateArticle" parameterType="com.zyh.webstudy.domain.article.Article">
+      update web_article
+      set
+          sortId = #{sortId},
+          isPulish = #{isPulish},
+          articleTitle = #{articleTitle},
+          articleContent = #{articleContent},
+          updateTime = #{updateTime}
+      where
+        id = #{id}
+    </update>
+
+    <!-- 删除文章 -->
+    <delete id="deletOneArticle" parameterType="java.lang.Integer">
+        delete from web_article
+        where id = #{articleId}
+    </delete>
 </mapper>

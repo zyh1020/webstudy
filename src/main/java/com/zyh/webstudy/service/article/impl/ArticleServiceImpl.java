@@ -19,7 +19,8 @@ import java.util.Map;
  * @date: 2021年04月17日 17:41
  */
 @Service
-public class ArticleServiceImpl implements ArticleService {
+public class
+ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
     /**
@@ -29,6 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public Boolean addOneArticle(Article article) {
+        article.setLookNum(0);
         article.setCreateTime(new Date());
         article.setUpdateTime(new Date());
         article.setDelete(false);
@@ -64,5 +66,33 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Integer countPageSelectArticles(Map<String, Object> mapParams) {
         return articleMapper.countPageFindArticleList(mapParams);
+    }
+
+    @Override
+    public Article getOneActicleById(Integer articleId) {
+        return articleMapper.selectOneActicleById(articleId);
+    }
+
+    @Override
+    public Integer countPersonSelectArticles(Map<String, Object> mapParams) {
+        return articleMapper.countPersonOfArticles(mapParams);
+    }
+
+    @Override
+    public List<Article> personSelectArticles(Map<String, Object> mapParams) {
+        return articleMapper.selectOnePersonOfActicles(mapParams);
+    }
+
+    @Override
+    public Boolean updateOneArticle(Article article) {
+        article.setUpdateTime(new Date());
+        articleMapper.updateArticle(article);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteOneArticle(Integer articleId) {
+        articleMapper.deletOneArticle(articleId);
+        return true;
     }
 }

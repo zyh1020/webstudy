@@ -2,15 +2,21 @@ package com.zyh.webstudy.service.course.impl;
 
 import com.zyh.webstudy.domain.course.Course;
 import com.zyh.webstudy.domain.course.CourseDetails;
+import com.zyh.webstudy.mapper.course.CapterMapper;
 import com.zyh.webstudy.mapper.course.CourseDetailsMapper;
 import com.zyh.webstudy.mapper.course.CourseMapper;
+import com.zyh.webstudy.mapper.course.VedioMapper;
 import com.zyh.webstudy.service.course.CourseService;
 import com.zyh.webstudy.vo.course.CourseVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 课程
@@ -18,12 +24,17 @@ import java.util.Date;
  * @date: 2021年04月07日 17:56
  */
 @Service
-public class CourseServiceImpl implements CourseService {
+public class
+CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseMapper courseMapper;
     @Autowired
     private CourseDetailsMapper courseDetailsMapper;
+    @Autowired
+    private CapterMapper capterMapper;
+    @Autowired
+    private VedioMapper vedioMapper;
 
     /**
       *@Description:  插入课程信息
@@ -70,5 +81,65 @@ public class CourseServiceImpl implements CourseService {
         BeanUtils.copyProperties(course,courseVo);
         BeanUtils.copyProperties(courseDetails,courseVo);
         return courseVo;
+    }
+
+    @Override
+    public Integer countCourse(Map<String, Object> mapParams) {
+        // 统计课程数目
+        return courseMapper.countCoursePageNum(mapParams);
+    }
+
+    @Override
+    public List<Course> findCourseList(Map<String, Object> mapParams) {
+        // 查询课程列表
+        return courseMapper.findCoursePageList(mapParams);
+    }
+
+    @Override
+    public Boolean deleteOneCourse(Integer courseId) {
+        try {
+            // ①，删除课程基本信息和详细信息
+            courseMapper.deleteOneCourse(courseId);
+            courseDetailsMapper.deleteOneCourseDetail(courseId);
+            // ②，删除章节信息和小节信息
+            capterMapper.deleteCourseOfCapters(courseId);
+            vedioMapper.deleteCourseOfVedios(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean updateOneCourse(CourseVo courseVo) {
+        try {
+            courseVo.setUpdateTime(new Date());
+            // 创建插入对象
+            Course course = new Course();
+            CourseDetails courseDetails = new CourseDetails();
+            // 为对象赋值
+            BeanUtils.copyProperties(courseVo,course);
+            BeanUtils.copyProperties(courseVo,courseDetails);
+            courseMapper.updateOneCourse(courseVo); // 修改基本信息
+            courseDetailsMapper.upDateOneCourseDetail(courseDetails); // 修改基本课程介绍
+        } catch (BeansException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteCourse(Integer courseId) {
+        return null;
+    }
+
+    @Override
+    public List<Course> findCourses(String type, Integer limit) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("type",type);
+        params.put("sizeLimit",limit);
+        return courseMapper.findCourses(params);
     }
 }

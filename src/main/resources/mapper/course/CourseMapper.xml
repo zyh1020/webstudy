@@ -18,6 +18,8 @@
         <result property="delete" column="cDelete"/>
         <result property="createTime" column="cCreateTime"/>
         <result property="updateTime" column="cUpdateTime"/>
+        <result property="sortName" column="cSortName"/>
+        <result property="sortParentName" column="cSortParentName"/>
     </resultMap>
 
     <!-- 带有上传人 -->
@@ -71,14 +73,128 @@
             wc.`delete` as cDelete,
             wc.createTime as cCreateTime,
             wc.updateTime as cUpdateTime,
+            ws.name AS cSortName,
+            wsp.name AS cSortParentName,
             us.id AS uId,
             us.name AS uName,
             us.username AS uUserName,
             us.userAvatar AS uUuserAvatar
          from web_course wc
          left join sys_user us on wc.personId = us.id
+         left join web_sort ws on wc.sortId = ws.id
+         left join web_sort wsp on wc.sortParentId = wsp.id
          where
             wc.id  = #{courseId}
     </select>
 
+    <!-- 查询分页课程数目 -->
+    <select id="countCoursePageNum"  parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(*)
+        from web_course wc
+        where wc.`delete` = 0
+        and  wc.courseStatus = 1
+        <if test="condition != null and condition.sortId != null">
+            AND wc.sortId = #{condition.sortId}
+        </if>
+        <if test="condition != null and condition.sortId != null">
+            AND wc.sortId = #{condition.sortId}
+        </if>
+        <if test="condition != null and condition.sortParentId != null">
+            AND wc.sortParentId = #{condition.sortParentId}
+        </if>
+        <if test="condition != null and condition.difficulty != null">
+            AND wc.difficulty = #{condition.difficulty}
+        </if>
+        <if test="condition != null and condition.title != null">
+            AND wc.title like '%${condition.title}%'
+        </if>
+    </select>
+
+    <!-- 查询分页课程列表数据 -->
+    <select id="findCoursePageList" parameterType="java.util.Map" resultMap="baseResultMap">
+        select
+            wc.id as cId,
+            wc.personId as cPersonId,
+            wc.sortId as cSortId,
+            wc.sortParentId as cSortParentId,
+            wc.title as cTitle,
+            wc.courseTime as cCourseTime,
+            wc.studyPersonNum as cStudyPersonNum,
+            wc.lookPersonNum as cLookPersonNum,
+            wc.courseCover as cCourseCover,
+            wc.difficulty as cDifficulty,
+            wc.courseStatus as cCourseStatus,
+            wc.`delete` as cDelete,
+            wc.createTime as cCreateTime,
+            wc.updateTime as cUpdateTime,
+            ws.name AS cSortName,
+            wsp.name AS cSortParentName
+        from web_course wc
+        left join web_sort ws on wc.sortId = ws.id
+        left join web_sort wsp on wc.sortParentId = wsp.id
+        where wc.`delete` = 0
+        and  wc.courseStatus = 1
+        <if test="condition != null and condition.sortId != null">
+            AND wc.sortId = #{condition.sortId}
+        </if>
+        <if test="condition != null and condition.sortParentId != null">
+            AND wc.sortParentId = #{condition.sortParentId}
+        </if>
+        <if test="condition != null and condition.difficulty != null">
+            AND wc.difficulty = #{condition.difficulty}
+        </if>
+        <if test="condition != null and condition.title != null">
+            AND wc.title like '%${condition.title}%'
+        </if>
+        <if test="orderBy == 0">
+            order by cCreateTime desc
+        </if>
+        <if test="orderBy == 1">
+            order by cStudyPersonNum desc
+        </if>
+         limit  #{currentPage},#{selectNum}
+    </select>
+
+    <!-- 查询课程 -->
+    <select id="findCourses" parameterType="java.util.Map" resultMap="baseResultMap">
+         select
+            wc.id as cId,
+            wc.personId as cPersonId,
+            wc.sortId as cSortId,
+            wc.sortParentId as cSortParentId,
+            wc.title as cTitle,
+            wc.courseTime as cCourseTime,
+            wc.studyPersonNum as cStudyPersonNum,
+            wc.lookPersonNum as cLookPersonNum,
+            wc.courseCover as cCourseCover,
+            wc.difficulty as cDifficulty,
+            wc.courseStatus as cCourseStatus,
+            wc.`delete` as cDelete,
+            wc.createTime as cCreateTime,
+            wc.updateTime as cUpdateTime,
+            ws.name AS cSortName,
+            wsp.name AS cSortParentName
+        from web_course wc
+        left join web_sort ws on wc.sortId = ws.id
+        left join web_sort wsp on wc.sortParentId = wsp.id
+         where wc.`delete` = 0
+         and  wc.courseStatus = 1
+         <if test="type == 'recommend'">
+            order by cDifficulty desc
+         </if>
+        <if test="type == 'new'">
+            order by cCreateTime desc
+        </if>
+        <if test="type == 'easy'">
+            order by cDifficulty asc
+        </if>
+        <if test="type == 'improve'">
+            order by cStudyPersonNum desc
+        </if>
+        <if test="type == 'advanced'">
+            order by cLookPersonNum desc
+        </if>
+        limit 1,#{sizeLimit}
+    </select>
 </mapper>

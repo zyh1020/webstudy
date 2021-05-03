@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyh.webstudy.mapper.banner.BannerMapper">
+
+    <resultMap id="baseMap" type="com.zyh.webstudy.domain.banner.Banner">
+        <result  property="id" column="bId"/>
+        <result  property="imgUrl" column="bImgUrl"/>
+        <result  property="hrefUrl" column="bHrefUrl"/>
+        <result  property="delete" column="bDelete"/>
+        <result  property="createTime" column="bCreateTime"/>
+        <result  property="updateTime" column="bUpdateTime"/>
+    </resultMap>
+
+    <select id="findAllBanners" resultMap="baseMap">
+        select
+             wb.id as bId,
+             wb.imgUrl as bImgUrl,
+             wb.hrefUrl as bHrefUrl,
+             wb.`delete` as bDelete,
+             wb.createTime as bCreateTime,
+             wb.updateTime as bUpdateTime
+        from web_banner wb
+        where wb.`delete` = 0
+    </select>
+
+
+</mapper>

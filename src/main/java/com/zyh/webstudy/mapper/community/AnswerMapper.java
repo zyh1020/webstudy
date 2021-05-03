@@ -7,4 +7,5 @@ import java.util.List;
 public interface AnswerMapper {
     List<Answer> selectAnswers(Integer problemId);
     void insertAnswer(Answer answer);
+    void deleteProblemOfAnswers(Integer problemId);
 }

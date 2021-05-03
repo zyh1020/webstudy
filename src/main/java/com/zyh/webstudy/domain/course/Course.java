@@ -29,4 +29,7 @@ public class Course {
     private Date createTime;
     private Date updateTime;
     private SysUser sysUser;
+
+    private String sortName;
+    private String sortParentName;
 }

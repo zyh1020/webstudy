@@ -27,9 +27,9 @@ public class OssController {
         // 获取登录后的用户
         String imgUrl = ossService.uploadImage(file);
         if(imgUrl != null){
-            return ResultUtil.success("上传头像成功",imgUrl);
+            return ResultUtil.success("上传图片成功",imgUrl);
         }else {
-            return ResultUtil.error("上传头像失败,请稍后尝试");
+            return ResultUtil.error("上传图片失败,请稍后尝试");
         }
 
     }
