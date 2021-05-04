@@ -1,17 +1,19 @@
 package com.zyh.webstudy.service.security.impl;
 
-import com.zyh.webstudy.domain.security.SysMenu;
 import com.zyh.webstudy.domain.security.SysRelation;
 import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.mapper.security.SysUserMapper;
 import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.JwtTokenUtil;
+import com.zyh.webstudy.vo.user.UserUpdateVo;
+import com.zyh.webstudy.vo.user.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public SysUser findUserByUserName(String userName) {
@@ -67,6 +71,28 @@ public class SysUserServiceImpl implements SysUserService {
             // ③，批量插入新的
             sysUserMapper.insertUserOfRoles(sysRelations);
         }
+    }
+
+    @Override
+    public void updateUserHeard(UserUpdateVo userUpdateVo) {
+        sysUserMapper.updateUserHeard(userUpdateVo);
+    }
+
+    @Override
+    public void updateUserInfo(UserUpdateVo userUpdateVo) {
+        sysUserMapper.updateUserInfo(userUpdateVo);
+    }
+
+    @Override
+    public void insertUser(UserRegisterVo userRegisterVo) {
+        userRegisterVo.setUserAvatar("https://webstudy.oss-cn-beijing.aliyuncs.com/header.jpg");
+        userRegisterVo.setPassword(bCryptPasswordEncoder.encode(userRegisterVo.getPassword()));
+        sysUserMapper.insertUserInfo(userRegisterVo);
+    }
+
+    @Override
+    public SysUser findUserByPhone(String phone) {
+        return sysUserMapper.findUserByPhone(phone);
     }
 
 

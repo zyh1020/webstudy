@@ -103,8 +103,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(
                     "/hello",
                     "/error",
-                    "/user/login",
-                    "/user/jwtLogin",
+                    "/user/login", // 登录
+                    "/user/jwtLogin",// 登录
+                    "/user/insertUser",// 注册
                     "/css/**",
                     "/js/**",
                     "/index.html",

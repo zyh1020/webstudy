@@ -21,5 +21,7 @@ public class Answer{
     private Boolean delete;
     private Date createTime;
     private Date updateTime;
+
     private SysUser sysUser;
+    private Problem problem;
 }

@@ -22,6 +22,15 @@
         </association >
     </resultMap>
 
+    <!-- 带上答案所属问题 -->
+    <resultMap id="selectPersonOfAnswersMap" type="com.zyh.webstudy.domain.community.Answer" extends="baseResultMap">
+        <association property="problem" javaType="com.zyh.webstudy.domain.community.Problem">
+            <id property="id" column="pId"/>
+            <result property="problemTitle" column="pProblemTitle"/>
+        </association >
+    </resultMap>
+
+
     <select id="selectAnswers" resultMap="selectAnswersMap" parameterType="java.lang.Integer">
       select
             wa.id as aId,
@@ -66,5 +75,44 @@
       where problemId = #{problemId}
     </delete>
 
+    <!-- 查询某人的所有答案 -->
+    <select id="countSelectPersonOfAnswers" resultType="java.lang.Integer" parameterType="java.util.Map">
+      select
+          count(*)
+        from web_answer wa
+        left join web_problem wp on wa.problemId = wp.id
+        where
+          wa.personId  = #{personId}
+    </select>
+    <select id="selectPersonOfAnswers" resultMap="selectPersonOfAnswersMap" parameterType="java.util.Map">
+        select
+            wa.id as aId,
+            wa.personId as aPersonId,
+            wa.problemId as aProblemId,
+            wa.answerContent as aAnswerContent,
+            wa.`delete` as aDelete,
+            wa.createTime as aCreateTime,
+            wa.updateTime as aUpdateTime,
+            wp.id as pId,
+            wp.problemTitle as pProblemTitle
+        from web_answer wa
+        left join web_problem wp on wa.problemId = wp.id
+        where
+          wa.personId  = #{personId}
+          order by aUpdateTime desc
+          limit #{currentPage},#{size}
+    </select>
 
+    <!-- 修改答案 -->
+    <update id="updateAnswer" parameterType="com.zyh.webstudy.domain.community.Answer">
+        update web_answer
+        set answerContent = #{answerContent},
+        updateTime = #{updateTime}
+        where id = #{id}
+    </update>
+    <!-- 删除答案 -->
+    <delete id="deleteAnswer" parameterType="java.lang.Integer">
+        delete from web_answer
+        where id = #{answerId}
+    </delete>
 </mapper>

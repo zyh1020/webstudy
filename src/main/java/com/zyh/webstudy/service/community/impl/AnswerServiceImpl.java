@@ -1,6 +1,7 @@
 package com.zyh.webstudy.service.community.impl;
 
 import com.zyh.webstudy.domain.community.Answer;
+import com.zyh.webstudy.domain.community.Problem;
 import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.mapper.community.AnswerMapper;
 import com.zyh.webstudy.service.community.AnswerService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 答案
@@ -43,5 +45,26 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setDelete(false);
         answerMapper.insertAnswer(answer);
         return true;
+    }
+
+    @Override
+    public Integer countSelectPersonOfAnswers(Map<String, Object> mapParams) {
+        return answerMapper.countSelectPersonOfAnswers(mapParams);
+    }
+
+    @Override
+    public List<Answer> selectPersonOfAnswers(Map<String, Object> mapParams) {
+        return answerMapper.selectPersonOfAnswers(mapParams);
+    }
+
+    @Override
+    public void updateAnswer(Answer answer) {
+        answer.setUpdateTime(new Date());
+        answerMapper.updateAnswer(answer);
+    }
+
+    @Override
+    public void deleteAnswer(Integer answerId) {
+        answerMapper.deleteAnswer(answerId);
     }
 }

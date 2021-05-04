@@ -1,14 +1,10 @@
 package com.zyh.webstudy.controller.community;
 
-import com.zyh.webstudy.domain.article.Article;
 import com.zyh.webstudy.domain.community.Problem;
 import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.service.community.ProblemService;
 import com.zyh.webstudy.utils.ResultUtil;
-import com.zyh.webstudy.vo.community.ProblemVo;
-import com.zyh.webstudy.vo.course.CourseVo;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

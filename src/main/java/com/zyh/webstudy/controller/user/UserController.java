@@ -3,7 +3,9 @@ package com.zyh.webstudy.controller.user;
 import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.ResultUtil;
+import com.zyh.webstudy.vo.user.UserUpdateVo;
 import com.zyh.webstudy.vo.user.UserLoginVo;
+import com.zyh.webstudy.vo.user.UserRegisterVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
@@ -69,4 +71,40 @@ public class UserController {
             return ResultUtil.success("获取用户信息成功",sysUser);
         }
     }
+
+
+
+    @ApiOperation("注册用户")
+    @PostMapping("/insertUser")
+    public ResultUtil insertUser(@RequestBody UserRegisterVo userRegisterVo){
+        // 判断验证码是否正确
+        if(!"6666".equals(userRegisterVo.getCode())){
+            return ResultUtil.error("验证码不正确");
+        }
+        SysUser sysUser = sysUserService.findUserByPhone(userRegisterVo.getPhone());
+        if(sysUser != null){
+            return ResultUtil.error("该号码已经注册了");
+        }
+        // 判断验证码是否正确
+        sysUserService.insertUser(userRegisterVo);
+        return ResultUtil.success("注册用户成功");
+    }
+
+    @ApiOperation("修改用户头像")
+    @PostMapping("/updateUserHeard")
+    public ResultUtil updateUserHeard(@RequestBody UserUpdateVo userUpdateVo){
+        // 判断验证码是否正确
+        sysUserService.updateUserHeard(userUpdateVo);
+        return ResultUtil.success("修改用户头像成功");
+    }
+
+    @ApiOperation("修改用户基础信息")
+    @PostMapping("/updateUserInfo")
+        public ResultUtil updateUserInfo(@RequestBody UserUpdateVo userUpdateVo){
+        // 判断验证码是否正确
+        sysUserService.updateUserInfo(userUpdateVo);
+        return ResultUtil.success("修改用户基础信息成功");
+    }
+
+
 }

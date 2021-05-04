@@ -84,4 +84,40 @@
         </foreach>
     </insert>
 
+
+    <!-- 查询用户通过电话号码 -->
+    <select id="findUserByPhone" parameterType="java.lang.String" resultMap="baseResultMap">
+      SELECT
+            us.id AS uId,
+            us.name AS uName,
+            us.username AS uUserName,
+            us.password AS uPassword,
+            us.phone AS uPhone,
+            us.address AS uAddress,
+            us.userAvatar AS uUuserAvatar,
+            us.remark AS uRemark,
+            us.enabled AS uEnable
+        FROM
+            sys_user us
+        where
+            us.phone = #{phone}
+    </select>
+    <!-- 插入用户信息 -->
+    <insert id="insertUserInfo" parameterType="com.zyh.webstudy.vo.user.UserRegisterVo">
+        insert into sys_user(`name`,username,`password`,phone,userAvatar)
+        values(#{name},#{phone},#{password},#{phone},#{userAvatar})
+    </insert>
+    <!-- 修改用户头像 -->
+    <update id="updateUserHeard" parameterType="com.zyh.webstudy.vo.user.UserUpdateVo">
+        update sys_user
+        set userAvatar = #{userAvatar}
+        where id = #{id}
+    </update>
+    <!-- 修改用户基本信息 -->
+    <update id="updateUserInfo" parameterType="com.zyh.webstudy.vo.user.UserUpdateVo">
+        update sys_user
+        set `name` = #{name}
+        where id = #{id}
+    </update>
+
 </mapper>
