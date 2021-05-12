@@ -2,6 +2,7 @@ package com.zyh.webstudy.service.security.impl;
 
 import com.zyh.webstudy.domain.security.SysRelation;
 import com.zyh.webstudy.domain.security.SysUser;
+import com.zyh.webstudy.mapper.security.SysRoleMapper;
 import com.zyh.webstudy.mapper.security.SysUserMapper;
 import com.zyh.webstudy.service.security.SysUserService;
 import com.zyh.webstudy.utils.JwtTokenUtil;
@@ -15,22 +16,24 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@Transactional
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper  sysUserMapper;
-
     @Autowired
     AuthenticationManager authenticationManager;
-
     @Autowired
     JwtTokenUtil jwtTokenUtil;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Override
     public SysUser findUserByUserName(String userName) {
@@ -51,8 +54,8 @@ public class SysUserServiceImpl implements SysUserService {
 
     // 获取用户列表
     @Override
-    public List<SysUser> findAllUser() {
-        return sysUserMapper.selectAllUser();
+    public List<SysUser> findAllUser(String userName) {
+        return sysUserMapper.selectAllUser(userName);
     }
 
     @Override
@@ -87,12 +90,28 @@ public class SysUserServiceImpl implements SysUserService {
     public void insertUser(UserRegisterVo userRegisterVo) {
         userRegisterVo.setUserAvatar("https://webstudy.oss-cn-beijing.aliyuncs.com/header.jpg");
         userRegisterVo.setPassword(bCryptPasswordEncoder.encode(userRegisterVo.getPassword()));
+        List<SysRelation> relations = new ArrayList<>();
+        SysRelation relation = new SysRelation();
         sysUserMapper.insertUserInfo(userRegisterVo);
+        relation.setEId(6);
+        relation.setFId(userRegisterVo.getId());
+        relations.add(relation);
+        sysUserMapper.insertUserOfRoles(relations);
     }
 
     @Override
     public SysUser findUserByPhone(String phone) {
         return sysUserMapper.findUserByPhone(phone);
+    }
+
+    @Override
+    public void setUserState(Map<String,Object> params) {
+        sysUserMapper.updateUserState(params);
+    }
+
+    @Override
+    public void deleteOneUserById(Integer userId) {
+        sysUserMapper.deleteOneUserById(userId);
     }
 
 

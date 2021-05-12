@@ -2,6 +2,7 @@ package com.zyh.webstudy.service.course.impl;
 
 import com.zyh.webstudy.domain.course.Capter;
 import com.zyh.webstudy.mapper.course.CapterMapper;
+import com.zyh.webstudy.mapper.course.VedioMapper;
 import com.zyh.webstudy.service.course.CapterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class CapterServiceImpl implements CapterService {
 
     @Autowired
     private CapterMapper capterMapper;
+    @Autowired
+    private VedioMapper vedioMapper;
 
     /**
       *@Description: 查询某个课程下的所有章节
@@ -46,6 +49,20 @@ public class CapterServiceImpl implements CapterService {
         capter.setUpdateTime(new Date());
         capterMapper.insertOneCapter(capter);
         return capter.getId();
+    }
+
+    @Override
+    public void deleteOneCapter(Integer capterId) {
+        // 删除章节的小节
+        vedioMapper.deleteCapterOfVedios(capterId);
+        // 删除章节
+        capterMapper.deleteOneCapter(capterId);
+    }
+
+    @Override
+    public void updateOneCapter(Capter capter) {
+        capter.setUpdateTime(new Date());
+        capterMapper.updateOneCapter(capter);
     }
 
 

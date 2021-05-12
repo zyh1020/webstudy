@@ -21,7 +21,11 @@ public class SysMenuSeviceImpl implements SysMenuService {
     }
     @Override
     public List<SysMenu> findMensByUserId(Integer userId) {
-        return sysMenuMapper.selectMensByUserId(userId);
+        // ①，查询所有的菜单
+        List<SysMenu> sysMenus = sysMenuMapper.selectMensByUserId(userId);
+        // ②，将菜单封装成树型结构
+        List<SysMenu> resultSysMenus = TreeMenusUtil.buildTreeMenus(sysMenus);
+        return resultSysMenus;
     }
 
     /* 查询所有菜单 */
@@ -44,6 +48,18 @@ public class SysMenuSeviceImpl implements SysMenuService {
         // ②，删除的id存储在deleteIds中
         selectDeleteIds(mId,deleteIds);
         sysMenuMapper.deleteMenusByIds(deleteIds);
+    }
+
+    // 修改菜单
+    @Override
+    public void updateOneMenu(SysMenu sysMenu) {
+        sysMenuMapper.updateOneMenu(sysMenu);
+    }
+
+    // 添加菜单
+    @Override
+    public void addOneMenu(SysMenu sysMenu) {
+        sysMenuMapper.addOneMenu(sysMenu);
     }
 
     /* 将需要删除的id存储在deleteIds中 */

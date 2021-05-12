@@ -26,4 +26,33 @@
         )
     </insert>
 
+    <!-- 删除小节信息 -->
+    <delete id="deleteVedioById" parameterType="java.lang.Integer">
+        delete from web_vedio
+        where id = #{vedioId}
+    </delete>
+
+    <!-- 删除某个课程的小节信息 -->
+    <delete id="deleteCourseOfVedios" parameterType="java.lang.Integer">
+        delete from web_vedio
+        where courseId = #{courseId}
+    </delete>
+
+    <!-- 删除某个章节的小节信息 -->
+    <delete id="deleteCapterOfVedios" parameterType="java.lang.Integer">
+        delete from web_vedio
+        where capterId = #{capterId}
+    </delete>
+
+    <!-- 修改小节信息-->
+    <update id="updateVedio" parameterType="com.zyh.webstudy.domain.course.Vedio">
+        update
+          web_vedio
+        set
+          vedioId = #{vedioId},
+          title = #{title},
+          updateTime = #{updateTime}
+        where id = #{id}
+    </update>
+
 </mapper>

@@ -21,8 +21,8 @@ mybatis:
 
 
 aliyun:
-  accessKeyId: LTAI5tBpZPq9Xzx24eKcREid
-  accessKeySecret: FAFZG32ZqsZFcqEpl56BCWzHZKzj06
+  accessKeyId: LTAI5tHChZf3iU5gHmw6bh6u
+  accessKeySecret:
   oss:
     endPoint: oss-cn-beijing.aliyuncs.com
     bucketName: webstudy

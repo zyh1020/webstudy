@@ -8,6 +8,5 @@ public interface CourseDetailsMapper {
     CourseDetails selectOneCourseDetails(Integer courseId);
 
     void deleteOneCourseDetail(Integer courseId);
-
     void upDateOneCourseDetail(CourseDetails courseDetails);
 }

@@ -17,6 +17,7 @@ import com.zyh.webstudy.vo.course.CourseVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.AntPathMatcher;
 
 import java.util.*;
 
@@ -45,6 +46,15 @@ class WebstudyApplicationTests {
     CourseService courseService;
     @Autowired
     ArticleMapper articleMapper;
+
+    // 路径匹配规则的
+    AntPathMatcher antPathMatcher = new AntPathMatcher();
+    @Test
+    void test15() {
+        boolean match = antPathMatcher.match("/com/pro/findPersonOfProblem/*", "/com/pro/findPersonOfProblem/1/1");
+        System.out.println(match);
+    }
+
     @Test
     void test14() {
         Map<String,Object> map = new HashMap<>();

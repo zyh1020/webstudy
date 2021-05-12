@@ -48,7 +48,7 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
         }
 
         // 一种：用户未登录情况下访问受保护资源；二种：用户登录情况下访问被保护资源
-        throw new AccessDeniedException("授权失败");
+        throw new AccessDeniedException("权限不足！");
     }
 
     @Override

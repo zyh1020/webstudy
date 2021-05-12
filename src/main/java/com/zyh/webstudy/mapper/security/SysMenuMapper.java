@@ -20,4 +20,7 @@ public interface SysMenuMapper {
     // 查询角色拥有的权限列表
     List<SysMenu> selectMenusByRolesId(Integer roleId);
 
+    void updateOneMenu(SysMenu sysMenu);
+
+    void addOneMenu(SysMenu sysMenu);
 }

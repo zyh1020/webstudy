@@ -67,10 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 未认证处理
         http.exceptionHandling().authenticationEntryPoint(unauthEntryPointHandler);
 
-        //
-
-
-
         // 动态权限配置
         http.authorizeRequests()
                 .anyRequest() // 所有请求
@@ -106,6 +102,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/user/login", // 登录
                     "/user/jwtLogin",// 登录
                     "/user/insertUser",// 注册
+                    "/sort/category/findAllList",// 查询分类列表
+                    "/ban/getAllBanners",// 查询轮播图
+                    "/cou/info/findCourse/*",// 查询课程详情
+                    "/cou/info/findPageCourse/**",// 分页查询课程
+                    "/cou/info/findCourses/**",// 首页热门课程查询
+                    "/cou/capter/findCapters/**",// 查询课程的章节
+                    "/com/ans/findAnswers/*",// 查询问题的答案列表
+                    "/com/pro/findOneProblem/*",// 查询问题详情
+                    "/com/pro/findPageProblem/**",// 查询问题列表
+                    "/art/article/findPageActicle/**",// 查询文章列表
+                    "/art/article/findOneActicle/*",// 查询文章详情
+                    "/ali/vedio/getVedio/*",// 获取视频播放凭证
+                    "/ali/msm/sendCode/*",// 手机验证码
                     "/css/**",
                     "/js/**",
                     "/index.html",

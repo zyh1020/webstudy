@@ -2,6 +2,8 @@ package com.zyh.webstudy.service.course.impl;
 
 import com.zyh.webstudy.domain.course.Course;
 import com.zyh.webstudy.domain.course.CourseDetails;
+import com.zyh.webstudy.domain.course.CoursePerson;
+import com.zyh.webstudy.domain.security.SysUser;
 import com.zyh.webstudy.mapper.course.CapterMapper;
 import com.zyh.webstudy.mapper.course.CourseDetailsMapper;
 import com.zyh.webstudy.mapper.course.CourseMapper;
@@ -11,6 +13,8 @@ import com.zyh.webstudy.vo.course.CourseVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,8 +28,7 @@ import java.util.Map;
  * @date: 2021年04月07日 17:56
  */
 @Service
-public class
-CourseServiceImpl implements CourseService {
+public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseMapper courseMapper;
@@ -45,8 +48,10 @@ CourseServiceImpl implements CourseService {
      **/
     @Override
     public Integer insertOneCourse(CourseVo courseVo) {
-        courseVo.setPersonId(1); // 先写死
-        courseVo.setCourseStatus(0); // 未发布
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SysUser sysUser = (SysUser) authentication.getPrincipal();
+        courseVo.setPersonId(sysUser.getId());
+        courseVo.setCourseStatus(false); // 未发布
         courseVo.setLookPersonNum(0); // 无人观看
         courseVo.setStudyPersonNum(0); // 无人学习
         courseVo.setCreateTime(new Date());
@@ -94,7 +99,6 @@ CourseServiceImpl implements CourseService {
         // 查询课程列表
         return courseMapper.findCoursePageList(mapParams);
     }
-
     @Override
     public Boolean deleteOneCourse(Integer courseId) {
         try {
@@ -110,7 +114,6 @@ CourseServiceImpl implements CourseService {
         }
         return true;
     }
-
     @Override
     public boolean updateOneCourse(CourseVo courseVo) {
         try {
@@ -121,7 +124,7 @@ CourseServiceImpl implements CourseService {
             // 为对象赋值
             BeanUtils.copyProperties(courseVo,course);
             BeanUtils.copyProperties(courseVo,courseDetails);
-            courseMapper.updateOneCourse(courseVo); // 修改基本信息
+            courseMapper.updateOneCourse(course); // 修改基本信息
             courseDetailsMapper.upDateOneCourseDetail(courseDetails); // 修改基本课程介绍
         } catch (BeansException e) {
             e.printStackTrace();
@@ -129,12 +132,6 @@ CourseServiceImpl implements CourseService {
         }
         return true;
     }
-
-    @Override
-    public Boolean deleteCourse(Integer courseId) {
-        return null;
-    }
-
     @Override
     public List<Course> findCourses(String type, Integer limit) {
         Map<String,Object> params = new HashMap<>();
@@ -142,4 +139,47 @@ CourseServiceImpl implements CourseService {
         params.put("sizeLimit",limit);
         return courseMapper.findCourses(params);
     }
+
+    @Override
+    public void updateCourseStatus(Integer courseId, Boolean status) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("courseId",courseId);
+        params.put("status",status);
+        courseMapper.updateCourseStatus(params);
+    }
+
+    @Override
+    public void followCourse(CoursePerson coursePerson) {
+        courseMapper.followCourse(coursePerson); // 关注课程
+    }
+
+    @Override
+    public void cancelFollowCourses(Integer courseId, Integer personId) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("courseId",courseId);
+        params.put("personId",personId);
+        courseMapper.cancelFollowCourses(params);
+    }
+
+
+    // 关注查询
+    @Override
+    public Integer countFollowCourseNum(Map<String, Object> mapParams) {
+        return courseMapper.countFollowCourseNum(mapParams);
+    }
+
+    @Override
+    public List<Course> followCourseList(Map<String, Object> mapParams) {
+        return courseMapper.followCourseList(mapParams);
+    }
+
+    @Override
+    public Integer isFollowCourses(Integer courseId, Integer personId) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("courseId",courseId);
+        params.put("personId",personId);
+        return courseMapper.isFollowCourses(params);
+    }
+
+
 }

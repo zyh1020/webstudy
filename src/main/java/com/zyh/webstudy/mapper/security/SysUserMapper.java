@@ -6,12 +6,13 @@ import com.zyh.webstudy.vo.user.UserUpdateVo;
 import com.zyh.webstudy.vo.user.UserRegisterVo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysUserMapper {
     // 通过用户用户名查询用户
     SysUser selectUserByUserName(String userName);
     // 获取所有用户
-    List<SysUser> selectAllUser();
+    List<SysUser> selectAllUser(String userName);
     // 清空某个用户的角色信息
     void clearUserOfRoles(int userId);
     // 批量插入某个用户的角色-为用户分配角色
@@ -25,4 +26,8 @@ public interface SysUserMapper {
     void insertUserInfo(UserRegisterVo userRegisterVo);
 
     SysUser findUserByPhone(String phone);
+
+    void updateUserState(Map<String, Object> params);
+
+    void deleteOneUserById(Integer userId);
 }

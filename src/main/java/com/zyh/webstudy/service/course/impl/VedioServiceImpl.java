@@ -32,4 +32,14 @@ public class VedioServiceImpl implements VedioService {
         vedioMapper.insertOneVedio(vedio);
         return vedio.getId();
     }
+
+    @Override
+    public void deleteOneVedio(Integer vedioId) {
+        vedioMapper.deleteVedioById(vedioId);
+    }
+
+    @Override
+    public void updateVedio(Vedio vedio) {
+        vedioMapper.updateVedio(vedio);
+    }
 }

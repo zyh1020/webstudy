@@ -33,7 +33,6 @@
         delete from sys_menu_role
         where rid = #{roleId}
     </delete>
-
     <!-- 删除角色的某些权限 -->
     <delete id="deleteRoleMenus" parameterType="java.util.HashMap">
         delete from
@@ -42,6 +41,23 @@
         <foreach collection="deleteIds" open=" and mid in(" close=")" item="deleteId" separator="," >
             #{deleteId}
         </foreach>
+    </delete>
+    <!-- 添加角色 -->
+    <insert id="insertOneRoles" parameterType="com.zyh.webstudy.domain.security.SysRole">
+        insert into sys_role(`name`,`nameZh`)
+        values (#{name},#{nameZh})
+    </insert>
+    <!-- 修改角色 -->
+    <update id="updateOneRoles" parameterType="com.zyh.webstudy.domain.security.SysRole">
+        update sys_role
+        set `name` = #{name},nameZh = #{nameZh}
+        where id = #{id}
+    </update>
+
+    <!-- 删除角色 -->
+    <delete id="deleteOneRole" parameterType="java.lang.Integer">
+       delete from sys_role
+       where id = #{id}
     </delete>
 
 </mapper>

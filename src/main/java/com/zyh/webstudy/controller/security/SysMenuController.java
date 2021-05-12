@@ -8,9 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,10 +37,27 @@ public class SysMenuController {
     }
 
     @ApiOperation("删除菜单")
-    @GetMapping("/removeMenu")
-    public ResultUtil removeMenu(String mId){
+    @GetMapping("/removeMenu/{mId}")
+    public ResultUtil removeMenu(@PathVariable Integer mId){
         // 获取登录后的用户
-        sysMenuService.removeMenu(Integer.parseInt(mId));
+        sysMenuService.removeMenu(mId);
         return ResultUtil.success("删除菜单成功");
+    }
+
+
+    @ApiOperation("添加菜单")
+    @PostMapping("/addOneMenu")
+    public ResultUtil addOneMenu(@RequestBody SysMenu sysMenu){
+        // 获取登录后的用户
+        sysMenuService.addOneMenu(sysMenu);
+        return ResultUtil.success("添加菜单成功");
+    }
+
+    @ApiOperation("修改菜单")
+    @PostMapping("/updateOneMenu")
+    public ResultUtil updateOneMenu(@RequestBody SysMenu sysMenu){
+        // 获取登录后的用户
+        sysMenuService.updateOneMenu(sysMenu);
+        return ResultUtil.success("修改菜单成功");
     }
 }

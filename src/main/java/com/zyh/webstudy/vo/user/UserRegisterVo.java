@@ -14,6 +14,8 @@ import lombok.EqualsAndHashCode;
 @ApiModel(description = "登录实体类")
 @EqualsAndHashCode(callSuper = false)
 public class UserRegisterVo {
+    @ApiModelProperty(value = "用户名id")
+    public Integer id;
     @ApiModelProperty(value = "手机/用户名")
     public String phone;
     @ApiModelProperty(value = "密码")

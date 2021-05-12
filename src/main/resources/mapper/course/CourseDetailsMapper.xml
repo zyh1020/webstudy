@@ -42,4 +42,18 @@
 	        wcd.id  = #{courseId}
     </select>
 
+    <!-- 删除课程详情信息 -->
+    <delete id="deleteOneCourseDetail" parameterType="java.lang.Integer">
+        delete from web_course_details
+        where id = #{courseId}
+    </delete>
+
+    <update id="upDateOneCourseDetail" parameterType="com.zyh.webstudy.domain.course.CourseDetails">
+        update
+            web_course_details
+        set
+            description = #{description},
+            updateTime = #{updateTime}
+        where id = #{id};
+    </update>
 </mapper>

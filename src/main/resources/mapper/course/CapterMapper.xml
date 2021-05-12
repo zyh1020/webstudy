@@ -65,4 +65,26 @@
         )
     </insert>
 
+    <!-- 删除某个课程的章节信息 -->
+    <delete id="deleteCourseOfCapters" parameterType="java.lang.Integer">
+        delete from web_capter
+        where courseId = #{courseId}
+    </delete>
+
+    <!-- 删除某个章节 -->
+    <delete id="deleteOneCapter" parameterType="java.lang.Integer">
+        delete from web_capter
+        where id = #{capterId}
+    </delete>
+
+    <!-- 修改章节信息 -->
+    <update id="updateOneCapter" parameterType="com.zyh.webstudy.domain.course.Capter">
+        update
+          web_capter
+        set
+            title = #{title},
+            updateTime = #{updateTime}
+        where id = #{id};
+    </update>
+
 </mapper>

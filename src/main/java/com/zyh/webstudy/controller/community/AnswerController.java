@@ -25,7 +25,7 @@ public class AnswerController {
     @Autowired
     private AnswerService answerService;
 
-    @ApiOperation("查询答案列表")
+    @ApiOperation("查询问题的答案列表")
     @GetMapping("/findAnswers/{problemId}")
     public ResultUtil findAnswers(@PathVariable String problemId){
         List<Answer> Answers = answerService.findAnswerByProblemId(Integer.parseInt(problemId));

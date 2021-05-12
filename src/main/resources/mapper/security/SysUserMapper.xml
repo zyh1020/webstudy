@@ -45,7 +45,7 @@
     </select>
 
     <!-- 获取所有用户 -->
-    <select id="selectAllUser" resultMap="selectUserByUserNameMap">
+    <select id="selectAllUser" resultMap="selectUserByUserNameMap" parameterType="java.lang.String">
         SELECT
             us.id AS uId,
             us.name AS uName,
@@ -63,7 +63,12 @@
             sys_user us
             LEFT JOIN sys_user_role usro ON us.id = usro.uid
             LEFT JOIN sys_role ro ON usro.rid = ro.id
-        order by uId
+          <where>
+              <if test="userName != null">
+                  us.username like '%${userName}%'
+              </if>
+          </where>
+          order by uId
     </select>
 
     <!-- 清空某个用户的角色信息 -->
@@ -104,6 +109,9 @@
     </select>
     <!-- 插入用户信息 -->
     <insert id="insertUserInfo" parameterType="com.zyh.webstudy.vo.user.UserRegisterVo">
+        <selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
         insert into sys_user(`name`,username,`password`,phone,userAvatar)
         values(#{name},#{phone},#{password},#{phone},#{userAvatar})
     </insert>
@@ -119,5 +127,19 @@
         set `name` = #{name}
         where id = #{id}
     </update>
+
+    <!-- 更改用户状态 -->
+    <update id="updateUserState" parameterType="java.util.Map">
+        update sys_user
+        set enabled = #{state}
+        where id = ${userId}
+    </update>
+
+    <!-- 删除用户通过id -->
+    <delete id="deleteOneUserById" parameterType="java.lang.Integer">
+        delete from sys_user
+        where id = ${userId}
+    </delete>
+
 
 </mapper>

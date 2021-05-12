@@ -54,5 +54,29 @@ public class SysRoleController {
     }
 
 
+    @ApiOperation("添加角色")
+    @PostMapping("/addOneRole")
+    public ResultUtil addOneRoles(@RequestBody SysRole sysRole){
+        // 获取登录后的用户
+        sysRoleService.addOneRoles(sysRole);
+        return ResultUtil.success("添加角色成功");
+    }
+
+    @ApiOperation("修改角色")
+    @PostMapping("/updateOneRole")
+    public ResultUtil updateRoles(@RequestBody SysRole sysRole){
+        // 获取登录后的用户
+        sysRoleService.updateOneRoles(sysRole);
+        return ResultUtil.success("修改角色成功");
+    }
+
+    @ApiOperation("删除角色")
+    @GetMapping("/deleteOneRole/{roleId}")
+    public ResultUtil deleteOneRole(@PathVariable Integer roleId){
+        // 获取登录后的用户
+        sysRoleService.deleteOneRole(roleId);
+        return ResultUtil.success("修改角色成功");
+    }
+
 
 }

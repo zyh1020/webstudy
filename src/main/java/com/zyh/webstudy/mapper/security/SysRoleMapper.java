@@ -18,4 +18,12 @@ public interface SysRoleMapper {
 
     // 删除角色拥有某些的权限
     void deleteRoleMenus(Map<String, Object> params);
+
+    // 插入角色
+    void insertOneRoles(SysRole sysRole);
+
+    // 修改角色
+    void updateOneRoles(SysRole sysRole);
+
+    void deleteOneRole(Integer roleId);
 }

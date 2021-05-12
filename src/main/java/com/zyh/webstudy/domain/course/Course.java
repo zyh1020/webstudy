@@ -24,7 +24,7 @@ public class Course {
     private Integer lookPersonNum;
     private String courseCover;
     private Integer difficulty;
-    private String courseStatus;
+    private Boolean courseStatus;
     private Boolean delete;
     private Date createTime;
     private Date updateTime;

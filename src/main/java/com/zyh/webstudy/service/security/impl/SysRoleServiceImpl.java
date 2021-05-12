@@ -84,6 +84,21 @@ import java.util.Map;
         return resultMenus;
     }
 
+    @Override
+    public void addOneRoles(SysRole sysRole) {
+        sysRoleMapper.insertOneRoles(sysRole);
+    }
+
+    @Override
+    public void updateOneRoles(SysRole sysRole) {
+        sysRoleMapper.updateOneRoles(sysRole);
+    }
+
+    @Override
+    public void deleteOneRole(Integer roleId) {
+        sysRoleMapper.deleteOneRole(roleId);
+    }
+
     /* 将需要删除的id存储在deleteIds中 */
     private void selectDeleteIds(Integer mId, List<Integer> deleteIds) {
         // ①，查询mId的子菜单

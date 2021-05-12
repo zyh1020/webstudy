@@ -20,6 +20,6 @@ import java.io.IOException;
 public class UrlAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        ResponseJsonUtil.out(response, ResultUtil.error(403,"权限不足,请联系管理员"));
+        ResponseJsonUtil.out(response, ResultUtil.error(403,e.getMessage()));
     }
 }

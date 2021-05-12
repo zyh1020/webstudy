@@ -13,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
@@ -28,9 +29,10 @@ public class UserController {
 
     @ApiOperation("登录返回token")
     @PostMapping("/jwtLogin")
-    public ResultUtil login(@RequestBody UserLoginVo userLoginVo){
+    public ResultUtil login(@RequestBody UserLoginVo userLoginVo, HttpServletRequest request){
+        String code = (String)request.getSession().getAttribute(userLoginVo.getUsername());
         // 判断验证码是否正确
-        if(!"6666".equals(userLoginVo.getCode())){
+        if(code == null || !code.equals(userLoginVo.getCode())){
             return ResultUtil.error("验证码不正确");
         }
         try {
@@ -76,15 +78,17 @@ public class UserController {
 
     @ApiOperation("注册用户")
     @PostMapping("/insertUser")
-    public ResultUtil insertUser(@RequestBody UserRegisterVo userRegisterVo){
+    public ResultUtil insertUser(@RequestBody UserRegisterVo userRegisterVo,HttpServletRequest request){
+        String code = (String)request.getSession().getAttribute(userRegisterVo.getPhone());
         // 判断验证码是否正确
-        if(!"6666".equals(userRegisterVo.getCode())){
+        if(code == null || !code.equals(userRegisterVo.getCode())){
             return ResultUtil.error("验证码不正确");
         }
         SysUser sysUser = sysUserService.findUserByPhone(userRegisterVo.getPhone());
         if(sysUser != null){
             return ResultUtil.error("该号码已经注册了");
         }
+
         // 判断验证码是否正确
         sysUserService.insertUser(userRegisterVo);
         return ResultUtil.success("注册用户成功");

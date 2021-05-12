@@ -17,4 +17,11 @@ public interface SysRoleService {
 
     // ④，删除角色的某个权限并返回最新角色权限
     List<SysMenu> delteRoleMenus(String roleId, String menusId);
+
+    // 添加角色
+    void addOneRoles(SysRole sysRole);
+    // 修改角色
+    void updateOneRoles(SysRole sysRole);
+    // 删除角色
+    void deleteOneRole(Integer roleId);
 }

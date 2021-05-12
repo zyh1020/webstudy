@@ -14,4 +14,9 @@ public interface SysMenuService {
     List<SysMenu> findAllAuthority();
     // 删除菜单
     void removeMenu(Integer mId);
+
+    // 修改菜单
+    void updateOneMenu(SysMenu sysMenu);
+
+    void addOneMenu(SysMenu sysMenu);
 }

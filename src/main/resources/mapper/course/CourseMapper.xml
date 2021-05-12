@@ -21,7 +21,6 @@
         <result property="sortName" column="cSortName"/>
         <result property="sortParentName" column="cSortParentName"/>
     </resultMap>
-
     <!-- 带有上传人 -->
     <resultMap id="selectOneCourseInfoMap" type="com.zyh.webstudy.domain.course.Course" extends="baseResultMap">
         <association property="sysUser" javaType="com.zyh.webstudy.domain.security.SysUser">
@@ -87,7 +86,7 @@
             wc.id  = #{courseId}
     </select>
 
-    <!-- 查询分页课程数目 -->
+    <!-- 分页 -->
     <select id="countCoursePageNum"  parameterType="java.util.Map" resultType="java.lang.Integer">
         select
             count(*)
@@ -110,8 +109,6 @@
             AND wc.title like '%${condition.title}%'
         </if>
     </select>
-
-    <!-- 查询分页课程列表数据 -->
     <select id="findCoursePageList" parameterType="java.util.Map" resultMap="baseResultMap">
         select
             wc.id as cId,
@@ -156,7 +153,7 @@
          limit  #{currentPage},#{selectNum}
     </select>
 
-    <!-- 查询课程 -->
+    <!-- 排序查询课程 -->
     <select id="findCourses" parameterType="java.util.Map" resultMap="baseResultMap">
          select
             wc.id as cId,
@@ -197,4 +194,101 @@
         </if>
         limit 1,#{sizeLimit}
     </select>
+    <!-- 删除课程信息 -->
+    <delete id="deleteOneCourse" parameterType="java.lang.Integer">
+      delete from web_course
+      where id = #{courseId}
+    </delete>
+    <!-- 修改课程的基本新信息 -->
+    <update id="updateOneCourse" parameterType="com.zyh.webstudy.domain.course.Course">
+        update web_course
+        set
+            sortId = #{sortId},
+            sortParentId = #{sortParentId},
+            title = #{title},
+            courseTime = #{courseTime},
+            courseCover = #{courseCover},
+            difficulty = #{difficulty},
+            updateTime = #{updateTime}
+        where
+            id = #{id}
+    </update>
+
+    <!-- 修改课程状态 -->
+    <update id="updateCourseStatus" parameterType="java.util.Map">
+      update
+        web_course
+      set
+          courseStatus =#{status}
+       where
+          id = #{courseId}
+    </update>
+
+    <!-- 关注课程 -->
+    <insert id="followCourse" parameterType="com.zyh.webstudy.domain.course.CoursePerson">
+        insert into web_course_person(personId,courseId,`delete`,createTime,updateTime)
+        values(#{personId},#{courseId},#{delete},#{createTime},#{updateTime})
+    </insert>
+
+    <!-- 取消关注 -->
+    <delete id="cancelFollowCourses" parameterType="java.util.Map">
+        delete from web_course_person
+        where courseId = #{courseId}
+        and personId = #{personId}
+    </delete>
+
+    <!-- 分页关注 -->
+    <select id="countFollowCourseNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+      select
+           count(*)
+        from web_course wc
+        left join web_sort ws on wc.sortId = ws.id
+        left join web_sort wsp on wc.sortParentId = wsp.id
+        left join web_course_person wsu on wc.id = wsu.courseId
+        where wc.`delete` = 0
+        and  wc.courseStatus = 1
+        and  wsu.personId  = #{personId}
+    </select>
+    <select id="followCourseList" parameterType="java.util.Map" resultMap="baseResultMap">
+        select
+            wc.id as cId,
+            wc.personId as cPersonId,
+            wc.sortId as cSortId,
+            wc.sortParentId as cSortParentId,
+            wc.title as cTitle,
+            wc.courseTime as cCourseTime,
+            wc.studyPersonNum as cStudyPersonNum,
+            wc.lookPersonNum as cLookPersonNum,
+            wc.courseCover as cCourseCover,
+            wc.difficulty as cDifficulty,
+            wc.courseStatus as cCourseStatus,
+            wc.`delete` as cDelete,
+            wc.createTime as cCreateTime,
+            wc.updateTime as cUpdateTime,
+            ws.name AS cSortName,
+            wsp.name AS cSortParentName
+        from web_course wc
+        left join web_sort ws on wc.sortId = ws.id
+        left join web_sort wsp on wc.sortParentId = wsp.id
+        left join web_course_person wsu on wc.id = wsu.courseId
+        where wc.`delete` = 0
+        and  wc.courseStatus = 1
+        and  wsu.personId  = #{personId}
+        limit  #{currentPage},#{size}
+    </select>
+
+
+
+    <!-- 判断是否关注过 -->
+    <select id="isFollowCourses" parameterType="java.util.Map" resultType="java.lang.Integer">
+      select
+           count(*)
+        from web_course wc
+        left join web_course_person wsu on wc.id = wsu.courseId
+        where wc.`delete` = 0
+        and  wc.courseStatus = 1
+        and  wsu.personId  = #{personId}
+        and  wsu.courseId  = #{courseId}
+    </select>
+
 </mapper>

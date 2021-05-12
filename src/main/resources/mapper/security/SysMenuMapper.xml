@@ -23,6 +23,7 @@
             <result property="nameZh" column="rNameZh"/>
         </collection>
     </resultMap>
+
     <select id="selectMensWithRole" resultMap="selectMensWithRoleMap">
         select
             mu.id AS mId ,
@@ -40,7 +41,10 @@
         from sys_menu mu
         LEFT JOIN sys_menu_role  muro on mu.id = muro.mid
         LEFT JOIN sys_role ro on muro.rid = ro.id
-        where rId is not null
+        where
+        mu.url is not null
+        and mu.url != ''
+        and rId is not null
         ORDER BY mId
     </select>
 
@@ -58,41 +62,31 @@
             <result property="enabled" column="cEnabled"/>
         </collection>
     </resultMap>
-    <select id="selectMensByUserId" resultMap="selectMensByUserIdMap">
-    select
-        smp.id as mId,
-        smp.parentId as mParentId,
-        smp.url as mUrl,
-        smp.path as mPath,
-        smp.component as mComponent,
-        smp.name as mName,
-        smp.icon as mIcon,
-        smp.hidden as mHidden,
-        smp.enabled as mEnabled,
-        smc.id as cId,
-        smc.parentId as cParentId,
-        smc.url as cUrl,
-        smc.path as cPath,
-        smc.component as cComponent,
-        smc.name as cName,
-        smc.icon as cIcon,
-        smc.hidden as cHidden,
-        smc.enabled as cEnabled
-    from
-      sys_menu smp
-      LEFT JOIN sys_menu smc on smp.id = smc.parentId
-      LEFT JOIN sys_menu_role smr on smp.id = smr.mid
-      LEFT join sys_user_role sur on sur.rid = smr.rid
-    where
-      smc.id is not null
-      and sur.uid = #{userId}
-      and smp.parentId = 0
-    order by smp.id
-
+    <select id="selectMensByUserId" resultMap="baseResultMap">
+        select
+            distinct
+            smp.id as mId,
+            smp.parentId as mParentId,
+            smp.url as mUrl,
+            smp.path as mPath,
+            smp.component as mComponent,
+            smp.name as mName,
+            smp.icon as mIcon,
+            smp.hidden as mHidden,
+            smp.enabled as mEnabled
+        from
+          sys_menu smp
+          LEFT JOIN sys_menu_role smr on smp.id = smr.mid
+          LEFT join sys_user_role sur on sur.rid = smr.rid
+        where
+          smp.component is not null
+          and smp.component != ''
+          and sur.uid = #{userId}
+        order by smp.id
     </select>
 
 
-    <!-- 查询所有权限 -->
+    <!-- 查询所有菜单或权限 -->
     <select id="selectMensAll" resultMap="baseResultMap">
         select
             smp.id as mId,
@@ -154,5 +148,19 @@
             smr.rid = #{roleId}
         order by mId
     </select>
+
+
+    <!-- 修改菜单 -->
+    <update id="updateOneMenu" parameterType="com.zyh.webstudy.domain.security.SysMenu">
+        update sys_menu
+        set parentId = #{parentId}, url = #{url},path = #{path},
+            component = #{component},`name` = #{name},icon = #{icon},hidden = #{hidden}
+        where id = #{id}
+    </update>
+    <!-- 添加菜单 -->
+    <insert id="addOneMenu" parameterType="com.zyh.webstudy.domain.security.SysMenu">
+        insert into sys_menu(parentId,url,path,component,`name`,icon,hidden)
+        values (#{parentId},#{url},#{path},#{component},#{name},#{icon},#{hidden})
+    </insert>
 
 </mapper>

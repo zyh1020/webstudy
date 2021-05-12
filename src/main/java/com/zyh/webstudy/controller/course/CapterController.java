@@ -35,4 +35,16 @@ public class CapterController {
         return ResultUtil.success("添加章节成功！",capterId);
     }
 
+    @ApiOperation("修改章节")
+    @PostMapping("/updateOneCapter")
+    public ResultUtil updateOneCapter(@RequestBody Capter capter){
+        capterService.updateOneCapter(capter);
+        return ResultUtil.success("修改章节！");
+    }
+    @ApiOperation("删除章节")
+    @GetMapping("/deleteOneCapter/{capterId}")
+    public ResultUtil deleteOneCapter(@PathVariable Integer capterId){
+        capterService.deleteOneCapter(capterId);
+        return ResultUtil.success("删除章节成功！");
+    }
 }
